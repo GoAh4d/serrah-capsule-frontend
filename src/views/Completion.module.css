@@ -1,0 +1,132 @@
+.header { margin-bottom: 24px; }
+.title {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--white);
+  margin-top: 8px;
+}
+
+.banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  padding: 24px 28px;
+  border-radius: var(--radius-lg);
+  border: 1px solid;
+  margin-bottom: 24px;
+}
+
+.bannerSuccess { background: rgba(29,158,117,.08);  border-color: rgba(29,158,117,.3); }
+.bannerPartial { background: rgba(245,158,11,.06);  border-color: rgba(245,158,11,.25); }
+.bannerError   { background: rgba(226,75,74,.06);   border-color: rgba(226,75,74,.2); }
+
+.bannerIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 22px;
+}
+
+.iconSuccess { background: rgba(29,158,117,.15); }
+.iconPartial { background: rgba(245,158,11,.12); }
+.iconError   { background: rgba(226,75,74,.12); }
+
+.bannerTitle {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 4px;
+}
+
+.bannerSub { font-size: 14px; color: var(--text-muted); }
+
+.verifyNote {
+  font-size: 13px;
+  margin-top: 10px;
+  padding: 10px 14px;
+  background: rgba(255,255,255,.04);
+  border-radius: var(--radius);
+  color: var(--text-primary);
+  border-left: 3px solid var(--success);
+}
+
+.jobId {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-top: 8px;
+  font-family: monospace;
+}
+
+.failList { margin-bottom: 0; }
+
+.failListTitle {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.stepRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--navy-border);
+  font-size: 13px;
+}
+
+.stepRow:last-child { border-bottom: none; }
+
+.stepIcon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 10px;
+  margin-top: 1px;
+}
+
+.failed  { background: rgba(226,75,74,.15);  color: var(--danger); }
+.blocked { background: rgba(107,125,179,.15);color: var(--blocked); }
+
+.stepInfo { flex: 1; }
+.stepLabel { color: var(--text-primary); }
+.stepError  { font-size: 12px; color: var(--danger); margin-top: 3px; }
+.stepBlocked{ font-size: 12px; color: var(--blocked); margin-top: 3px; }
+
+.reupload {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid var(--navy-border);
+}
+
+.reuploadTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.dropZone {
+  border: 2px dashed var(--navy-border);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.dropZone:hover {
+  border-color: var(--accent);
+  background: var(--accent-glow);
+}
+
+.dropText { font-size: 14px; font-weight: 500; color: var(--text-primary); }
+.dropHint { font-size: 13px; color: var(--text-muted); margin-top: 4px; }

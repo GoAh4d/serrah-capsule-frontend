@@ -1,0 +1,53 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 32px;
+  background: var(--navy-mid);
+  border-bottom: 1px solid var(--navy-border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--white);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  position: relative;
+}
+
+.logo::after {
+  content: '';
+  display: block;
+  width: 28px;
+  height: 2px;
+  background: var(--accent);
+  margin-top: 3px;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.signout {
+  background: transparent;
+  border: 1px solid var(--navy-border);
+  color: var(--text-muted);
+  font-size: 13px;
+  padding: 7px 16px;
+  border-radius: var(--radius);
+  transition: all 0.2s;
+}
+
+.signout:hover {
+  border-color: var(--accent);
+  color: var(--accent-light);
+}
