@@ -51,3 +51,9 @@
   border-color: var(--accent);
   color: var(--accent-light);
 }
+
+.userName {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 500;
+}

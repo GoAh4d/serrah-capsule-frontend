@@ -84,3 +84,20 @@
 
 .btn:hover:not(:disabled) { background: var(--accent-light); }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.registerRow {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.registerLink {
+  background: none;
+  border: none;
+  color: var(--accent-light);
+  font-size: 13px;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+}
