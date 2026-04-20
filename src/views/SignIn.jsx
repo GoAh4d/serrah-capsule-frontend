@@ -15,8 +15,8 @@ export default function SignIn({ onSuccess, onRegister }) {
     const { status, data } = await signIn(email.trim().toLowerCase());
     setLoading(false);
 
-    if (status === 200 && data.ok) {
-      onSuccess();
+    if (status === 200 && data.ok && data.token) {
+      onSuccess(data.token);
     } else {
       const msgs = {
         missing_email:      'Please enter your email address.',
@@ -52,9 +52,7 @@ export default function SignIn({ onSuccess, onRegister }) {
 
         <div className={styles.registerRow}>
           Don't have an account?{' '}
-          <button className={styles.registerLink} onClick={onRegister}>
-            Register
-          </button>
+          <button className={styles.registerLink} onClick={onRegister}>Register</button>
         </div>
       </div>
     </div>
