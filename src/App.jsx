@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { getMe, signOut } from './api/auth';
+import { getMe, signOut, setToken, clearToken, verifyEmail } from './api/auth';
 import { getEnvironments, getJobs } from './api/capsule';
 import { useJob } from './hooks/useJob';
 import Header from './components/Header';
@@ -24,21 +24,18 @@ function currentStage(status) {
 }
 
 export default function App() {
-  // ── AUTH STATE ─────────────────────────────────
-  const [screen, setScreen]         = useState('loading'); // loading | verify | signin | register | app
+  const [screen, setScreen]           = useState('loading');
   const [verifyToken, setVerifyToken] = useState(null);
-  const [user, setUser]             = useState(null);
+  const [user, setUser]               = useState(null);
   const [environments, setEnvironments] = useState([]);
-
-  // ── JOB STATE ──────────────────────────────────
-  const [jobs, setJobs]             = useState([]);
+  const [jobs, setJobs]               = useState([]);
   const [currentJobId, setCurrentJobId] = useState(null);
-  const [currentEnv, setCurrentEnv] = useState(null);
-  const [toast, setToast]           = useState('');
+  const [currentEnv, setCurrentEnv]   = useState(null);
+  const [toast, setToast]             = useState('');
 
   const { job, steps, sseConnected, sseReconnecting, updateNotify } = useJob(currentJobId);
 
-  // ── ON LOAD — check for verify token, then session ──
+  // ── ON LOAD ───────────────────────────────────
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const token = params.get('verify');
@@ -47,26 +44,14 @@ export default function App() {
       setScreen('verify');
       return;
     }
-    checkSession();
+    setScreen('signin');
   }, []);
-
-  async function checkSession() {
-    const { status, data } = await getMe();
-    if (status === 200) {
-      setUser(data);
-      await loadEnvironments();
-      setScreen('app');
-    } else {
-      setScreen('signin');
-    }
-  }
 
   async function loadEnvironments() {
     const { status, data } = await getEnvironments();
     if (status === 200) setEnvironments(data.environments || []);
   }
 
-  // ── LOAD JOB LIST ─────────────────────────────
   const loadJobs = useCallback(async () => {
     const { status, data } = await getJobs();
     if (status === 200) setJobs(data.jobs || []);
@@ -81,21 +66,29 @@ export default function App() {
   }, [job?.status, loadJobs]);
 
   // ── AUTH HANDLERS ─────────────────────────────
-  async function handleSignInSuccess() {
+  async function handleTokenReceived(token) {
+    setToken(token);
     const { status, data } = await getMe();
     if (status === 200) {
       setUser(data);
       await loadEnvironments();
       setScreen('app');
+      // Clean up verify param from URL
+      window.history.replaceState({}, '', window.location.pathname);
     }
   }
 
-  async function handleVerifySuccess() {
-    await handleSignInSuccess();
+  async function handleSignInSuccess(token) {
+    await handleTokenReceived(token);
+  }
+
+  async function handleVerifySuccess(token) {
+    await handleTokenReceived(token);
   }
 
   async function handleSignOut() {
     await signOut();
+    clearToken();
     setUser(null);
     setCurrentJobId(null);
     setCurrentEnv(null);
@@ -120,11 +113,6 @@ export default function App() {
   function handleNewUpload() {
     setCurrentJobId(null);
     setCurrentEnv(null);
-  }
-
-  function showToast(msg) {
-    setToast(msg);
-    setTimeout(() => setToast(''), 4000);
   }
 
   // ── SCREENS ───────────────────────────────────
@@ -159,17 +147,12 @@ export default function App() {
     );
   }
 
-  // ── MAIN APP ──────────────────────────────────
   const stage = currentJobId ? currentStage(job?.status) : 1;
   const envForView = currentEnv || job?.environment;
 
   return (
     <div className={styles.app}>
-      <Header
-        user={user}
-        onSignOut={handleSignOut}
-        onLogoClick={handleNewUpload}
-      />
+      <Header user={user} onSignOut={handleSignOut} onLogoClick={handleNewUpload} />
       <div className={styles.shell}>
         <Sidebar
           jobs={jobs}
@@ -178,12 +161,8 @@ export default function App() {
           onSelectJob={handleSelectJob}
         />
         <main className={styles.content}>
-          {stage === 1 && (
-            <Upload environments={environments} onJobCreated={handleJobCreated} />
-          )}
-          {stage === 2 && (
-            <Validation job={job} env={envForView} onJobCreated={handleJobCreated} />
-          )}
+          {stage === 1 && <Upload environments={environments} onJobCreated={handleJobCreated} />}
+          {stage === 2 && <Validation job={job} env={envForView} onJobCreated={handleJobCreated} />}
           {stage === 3 && (
             <Execute
               job={job} steps={steps} env={envForView}
@@ -191,9 +170,7 @@ export default function App() {
               onNotifyChange={updateNotify}
             />
           )}
-          {stage === 4 && (
-            <Completion job={job} env={envForView} onJobCreated={handleJobCreated} />
-          )}
+          {stage === 4 && <Completion job={job} env={envForView} onJobCreated={handleJobCreated} />}
         </main>
       </div>
       {toast && <div className={styles.toast}>{toast}</div>}
