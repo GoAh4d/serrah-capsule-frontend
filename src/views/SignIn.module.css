@@ -101,3 +101,10 @@
   text-decoration: underline;
   padding: 0;
 }
+
+.hint {
+  font-size: 14px;
+  color: var(--text-primary);
+  line-height: 1.6;
+  margin-top: 16px;
+}
