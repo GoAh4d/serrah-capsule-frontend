@@ -6,6 +6,7 @@ export default function SignIn({ onSuccess, onRegister }) {
   const [email, setEmail]     = useState('');
   const [error, setError]     = useState('');
   const [loading, setLoading] = useState(false);
+  const [sent, setSent]       = useState(false);
 
   async function handleSubmit() {
     setError('');
@@ -15,8 +16,12 @@ export default function SignIn({ onSuccess, onRegister }) {
     const { status, data } = await signIn(email.trim().toLowerCase());
     setLoading(false);
 
-    if (status === 200 && data.ok && data.token) {
-      onSuccess(data.token);
+    if (status === 200 && data.ok) {
+      if (data.token) {
+        onSuccess(data.token);
+      } else {
+        setSent(true);
+      }
     } else {
       const msgs = {
         missing_email:      'Please enter your email address.',
@@ -25,6 +30,20 @@ export default function SignIn({ onSuccess, onRegister }) {
       };
       setError(msgs[data.error] || 'Sign-in failed. Please try again.');
     }
+  }
+
+  if (sent) {
+    return (
+      <div className={styles.wrap}>
+        <div className={styles.card}>
+          <div className={styles.logo}>Serrah</div>
+          <p className={styles.subtitle}>Check your inbox</p>
+          <p className={styles.hint}>
+            We've sent a sign-in link to <strong>{email}</strong>. Click the link in the email to continue.
+          </p>
+        </div>
+      </div>
+    );
   }
 
   return (

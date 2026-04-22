@@ -32,8 +32,12 @@ export function useJob(jobId) {
     closeSse();
     const es = openJobStream(jobId);
     sseRef.current = es;
-    setSseConnected(true);
     setSseReconnecting(false);
+
+    es.onopen = () => {
+      setSseConnected(true);
+      setSseReconnecting(false);
+    };
 
     es.onmessage = (e) => {
       try {
