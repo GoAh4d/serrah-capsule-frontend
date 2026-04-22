@@ -3,10 +3,10 @@ import styles from './Sidebar.module.css';
 const BADGE = {
   completed_success: ['success', 'Done'],
   completed_partial:  ['partial', 'Partial'],
-  validation_failed:  ['failed',  'Invalid'],
-  failed_system:      ['failed',  'Error'],
+  validation_failed:  ['invalid',  'Invalid'],
+  failed_system:      ['invalid',  'Error'],
   running:            ['running', 'Running'],
-  queued:             ['running', 'Queued'],
+  queued:             ['queued',  'Queued'],
   validating:         ['pending', 'Validating'],
   pending:            ['pending', 'Pending'],
 };
@@ -31,6 +31,15 @@ export default function Sidebar({ jobs, currentJobId, onNewUpload, onSelectJob }
         New upload
       </button>
       <div className={styles.list}>
+        {jobs.length === 0 && (
+          <div className={styles.empty}>
+            No uploads yet.{' '}
+            <button className={styles.emptyBtn} onClick={onNewUpload}>
+              New upload
+            </button>{' '}
+            to get started.
+          </div>
+        )}
         {jobs.map(job => {
           const [badgeCls, badgeLabel] = BADGE[job.status] || ['pending', job.status];
           return (

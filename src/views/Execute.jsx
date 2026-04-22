@@ -9,6 +9,27 @@ const STATUS_ICON = {
   running:   { cls: 'running',   sym: '…' },
 };
 
+function useElapsed(startIso) {
+  const [elapsed, setElapsed] = useState(0);
+
+  useEffect(() => {
+    if (!startIso) return;
+    const origin = new Date(startIso).getTime();
+    setElapsed(Math.max(0, Math.floor((Date.now() - origin) / 1000)));
+    const id = setInterval(() => {
+      setElapsed(Math.max(0, Math.floor((Date.now() - origin) / 1000)));
+    }, 1000);
+    return () => clearInterval(id);
+  }, [startIso]);
+
+  const h = Math.floor(elapsed / 3600);
+  const m = Math.floor((elapsed % 3600) / 60);
+  const s = elapsed % 60;
+  if (h > 0) return `${h}h ${String(m).padStart(2, '0')}m ${String(s).padStart(2, '0')}s`;
+  if (m > 0) return `${m}m ${String(s).padStart(2, '0')}s`;
+  return `${s}s`;
+}
+
 function StepRow({ step }) {
   const { cls, sym } = STATUS_ICON[step.status] || { cls: '', sym: '·' };
   return (
@@ -31,6 +52,8 @@ function StepRow({ step }) {
 export default function Execute({ job, steps, env, sseConnected, onNotifyChange }) {
   const [stepsOpen, setStepsOpen] = useState(false);
   const [notifyEmail, setNotifyEmail] = useState(job?.notify_email !== false);
+
+  const elapsed = useElapsed(job?.started_at);
 
   const stepList = Object.values(steps).sort((a, b) => a.index - b.index);
   const total     = stepList.length || '?';
@@ -58,6 +81,9 @@ export default function Execute({ job, steps, env, sseConnected, onNotifyChange 
           {attention} require attention
           {inProgress ? ` · #${inProgress.index + 1} in progress` : ''}
         </div>
+        {job?.started_at && (
+          <div className={styles.elapsed}>Elapsed: {elapsed}</div>
+        )}
         <div className={styles.counterRow}>
           <div className={styles.stat}>
             <span className={`${styles.statVal} ${styles.cCompleted}`}>{completed}</span>

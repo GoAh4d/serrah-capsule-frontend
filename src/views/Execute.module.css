@@ -23,6 +23,13 @@
   margin-top: 4px;
 }
 
+.elapsed {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 6px;
+  font-variant-numeric: tabular-nums;
+}
+
 .counterRow {
   display: flex;
   gap: 24px;
