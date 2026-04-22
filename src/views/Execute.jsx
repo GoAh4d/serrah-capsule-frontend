@@ -28,7 +28,7 @@ function StepRow({ step }) {
   );
 }
 
-export default function Execute({ job, steps, env, sseConnected, sseReconnecting, onNotifyChange }) {
+export default function Execute({ job, steps, env, sseConnected, onNotifyChange }) {
   const [stepsOpen, setStepsOpen] = useState(false);
   const [notifyEmail, setNotifyEmail] = useState(job?.notify_email !== false);
 
@@ -75,8 +75,8 @@ export default function Execute({ job, steps, env, sseConnected, sseReconnecting
           </div>
         </div>
         <div className={styles.sseIndicator}>
-          <span className={`${styles.sseDot} ${sseReconnecting ? styles.reconnecting : ''}`} />
-          {sseReconnecting ? 'Reconnecting…' : sseConnected ? 'Live stream connected' : 'Polling for updates'}
+          <span className={styles.sseDot} />
+          {sseConnected ? 'Live stream connected' : 'Polling for updates'}
         </div>
         <div className={styles.notifyRow}>
           <span className={styles.notifyLabel}>Email notification when complete</span>
