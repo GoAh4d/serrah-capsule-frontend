@@ -60,7 +60,6 @@
   animation: pulse 2s ease-in-out infinite;
 }
 
-.sseDot.reconnecting { background: var(--warning); }
 
 @keyframes pulse {
   0%, 100% { opacity: 1; }

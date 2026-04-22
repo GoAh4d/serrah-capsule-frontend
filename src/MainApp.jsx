@@ -32,7 +32,7 @@ export default function MainApp() {
   const [currentJobId, setCurrentJobId] = useState(null);
   const [currentEnv, setCurrentEnv] = useState(null);
 
-  const { job, steps, sseConnected, sseReconnecting, updateNotify } = useJob(currentJobId);
+  const { job, steps, sseConnected, updateNotify } = useJob(currentJobId);
 
   // ── LOAD JOB LIST ─────────────────────────────
   const loadJobs = useCallback(async () => {
@@ -123,7 +123,6 @@ export default function MainApp() {
               steps={steps}
               env={envForView}
               sseConnected={sseConnected}
-              sseReconnecting={sseReconnecting}
               onNotifyChange={updateNotify}
             />
           )}
