@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { uploadJob } from '../api/capsule';
-import { StageSteps, Card, EnvPill } from '../components/UI';
+import { StageSteps, Card } from '../components/UI';
 import styles from './Completion.module.css';
 
 function StepFailRow({ step }) {
@@ -60,8 +60,10 @@ export default function Completion({ job, env, onJobCreated }) {
     <div>
       <StageSteps current={4} />
       <div className={styles.header}>
-        <EnvPill env={env} />
-        <h1 className={styles.title}>Job Complete</h1>
+        <h1 className={styles.title}>{env?.label || 'Complete'}</h1>
+        {(job?.original_filename || job?.filename) && (
+          <p className={styles.subtitle}>{job.original_filename || job.filename}</p>
+        )}
       </div>
 
       {/* SUCCESS */}

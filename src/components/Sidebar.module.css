@@ -1,11 +1,21 @@
 .sidebar {
-  width: 260px;
+  width: 220px;
   flex-shrink: 0;
   background: var(--navy-mid);
-  border-right: 1px solid var(--navy-border);
   display: flex;
   flex-direction: column;
-  padding: 20px 0;
+  padding: 0;
+}
+
+.logoBar {
+  padding: 18px 16px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.logoImg {
+  height: 22px;
+  width: auto;
+  display: block;
 }
 
 .label {
@@ -13,50 +23,52 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1.2px;
-  color: var(--text-dim);
-  padding: 0 20px 10px;
+  color: rgba(255, 255, 255, 0.35);
+  padding: 14px 16px 8px;
 }
 
 .newBtn {
-  margin: 0 14px 16px;
+  margin: 0 12px 12px;
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 14px;
-  background: var(--accent-glow);
-  border: 1px solid var(--accent);
+  padding: 9px 12px;
+  background: var(--color-steel-blue);
+  border: none;
   border-radius: var(--radius);
-  color: var(--accent-light);
+  color: var(--navy);
   font-size: 13px;
   font-weight: 500;
-  transition: all 0.2s;
+  transition: color var(--transition-fast), background var(--transition-fast);
 }
 
 .newBtn:hover {
-  background: rgba(91, 95, 239, 0.28);
+  background: var(--accent);
+  color: var(--navy);
 }
 
 .list {
   overflow-y: auto;
   flex: 1;
+  padding: 8px 0;
 }
 
 .item {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 11px 20px;
+  padding: 10px 16px;
   cursor: pointer;
-  border-left: 3px solid transparent;
-  transition: all 0.15s;
+  border-left: 2px solid transparent;
+  transition: all var(--transition-fast);
 }
 
 .item:hover {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .item.active {
-  background: rgba(91, 95, 239, 0.08);
+  background: rgba(79, 109, 140, 0.3);
   border-left-color: var(--accent);
 }
 
@@ -78,12 +90,26 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: var(--text-primary);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.item.active .env {
+  color: #fff;
+  font-weight: 600;
+}
+
+.filename {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.55);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .meta {
   font-size: 11px;
-  color: var(--text-muted);
+  color: rgba(255, 255, 255, 0.35);
   margin-top: 2px;
 }
 
@@ -91,17 +117,19 @@
   font-size: 10px;
   font-weight: 600;
   padding: 2px 7px;
-  border-radius: 20px;
+  border-radius: var(--radius);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.4px;
+  background: #fff;
+  flex-shrink: 0;
 }
 
-.success { background: rgba(29, 158, 117, 0.15); color: var(--success); }
-.partial { background: rgba(245, 158, 11, 0.12); color: var(--warning); }
-.invalid { background: rgba(226, 75, 74, 0.12);  color: var(--danger); }
-.running { background: rgba(91, 95, 239, 0.15);  color: var(--accent-light); animation: pulse 1.6s ease-in-out infinite; }
-.queued  { background: rgba(122, 139, 168, 0.14); color: #9aacbe; }
-.pending { background: rgba(122, 139, 168, 0.1); color: var(--text-muted); }
+.success { color: #16A34A; }
+.partial { color: #D97706; }
+.invalid { color: #DC2626; }
+.running { color: #5B6CFF; animation: pulse 1.6s ease-in-out infinite; }
+.queued  { color: #4F6D8C; }
+.pending { color: #9ca3af; }
 
 @keyframes pulse {
   0%, 100% { opacity: 1; }
@@ -109,9 +137,9 @@
 }
 
 .empty {
-  padding: 24px 20px;
+  padding: 20px 16px;
   font-size: 12px;
-  color: var(--text-muted);
+  color: rgba(255, 255, 255, 0.4);
   line-height: 1.6;
 }
 
@@ -124,4 +152,55 @@
   font-weight: 500;
   cursor: pointer;
   text-decoration: underline;
+}
+
+/* User section */
+.userSection {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.userSection:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.userAvatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.userInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.userName {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.userRole {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: capitalize;
+  margin-top: 1px;
 }

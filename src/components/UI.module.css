@@ -2,11 +2,11 @@
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  padding: 5px 12px;
-  border-radius: 20px;
+  padding: 4px 10px;
+  border-radius: var(--radius);
   font-size: 12px;
   font-weight: 600;
-  border: 1px solid;
+  border: 1px solid var(--navy-border);
 }
 
 .envDot {
@@ -30,7 +30,7 @@
   color: var(--text-dim);
 }
 
-.step.active { color: var(--accent-light); }
+.step.active { color: var(--accent); }
 .step.done   { color: var(--success); }
 
 .stepNum {
@@ -52,7 +52,7 @@
 }
 
 .done .stepNum {
-  background: rgba(29, 158, 117, 0.15);
+  background: var(--state-success-bg);
   border-color: var(--success);
   color: var(--success);
 }
@@ -68,7 +68,7 @@
 .card {
   background: var(--navy-card);
   border: 1px solid var(--navy-border);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius);
   padding: 28px;
 }
 
@@ -105,7 +105,7 @@
   inset: 0;
   background: var(--navy-border);
   border-radius: 99px;
-  transition: background 0.2s;
+  transition: background var(--transition-base);
 }
 
 .toggle input:checked + .toggleTrack {
@@ -121,7 +121,7 @@
   border-radius: 50%;
   top: 3px;
   left: 3px;
-  transition: transform 0.2s;
+  transition: transform var(--transition-base);
 }
 
 .toggle input:checked + .toggleTrack::after {

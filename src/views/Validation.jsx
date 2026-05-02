@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { uploadJob } from '../api/capsule';
-import { StageSteps, Card, EnvPill, Spinner } from '../components/UI';
+import { StageSteps, Card, Spinner } from '../components/UI';
 import styles from './Validation.module.css';
 
 function ReUpload({ env, onJobCreated }) {
@@ -14,7 +14,7 @@ function ReUpload({ env, onJobCreated }) {
 
   return (
     <div className={styles.reupload}>
-      <div className={styles.reuploadTitle}>Re-upload corrected workbook</div>
+      <div className={styles.reuploadTitle}>Upload the updated version of the workbook here.</div>
       <Card>
         <div
           className={styles.dropZone}
@@ -27,7 +27,7 @@ function ReUpload({ env, onJobCreated }) {
             style={{ display: 'none' }}
             onChange={e => handleFile(e.target.files[0])}
           />
-          <div className={styles.dropText}>Drop corrected .xlsx file here</div>
+          <div className={styles.dropText}>Drop updated .xlsx file here</div>
           <div className={styles.dropHint}>or click to browse</div>
         </div>
       </Card>
@@ -44,17 +44,10 @@ export default function Validation({ job, env, onJobCreated }) {
     <div>
       <StageSteps current={2} />
       <div className={styles.header}>
-        <EnvPill env={env} />
-        <h1 className={styles.title}>
-          {isRunning ? 'Validating workbook…' : isFailed ? 'Validation failed' : 'Validation'}
-        </h1>
-        <p className={styles.subtitle}>
-          {isRunning
-            ? 'Checking structure and field values.'
-            : isFailed
-            ? 'Fix the issues below and re-upload your workbook.'
-            : ''}
-        </p>
+        <h1 className={styles.title}>{env?.label || 'Validation'}</h1>
+        {(job?.original_filename || job?.filename) && (
+          <p className={styles.subtitle}>{job.original_filename || job.filename}</p>
+        )}
       </div>
 
       {isRunning && (
