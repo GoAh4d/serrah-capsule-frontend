@@ -1,45 +1,57 @@
-.header { margin-bottom: 24px; }
-.title {
-  font-size: 26px;
-  font-weight: 700;
-  letter-spacing: -0.5px;
-  color: var(--white);
-  margin-top: 8px;
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--navy);
+  padding: 16px 24px;
+  margin: 0 -24px 20px;
+  border-bottom: 1px solid var(--navy-border);
 }
+
+.title {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--navy-mid);
+}
+
+.subtitle { font-size: 13px; color: var(--text-muted); margin-top: 3px; }
 
 .banner {
   display: flex;
   align-items: flex-start;
   gap: 18px;
-  padding: 24px 28px;
-  border-radius: var(--radius-lg);
+  padding: 20px 24px;
+  border-radius: var(--radius);
   border: 1px solid;
+  border-left-width: 3px;
   margin-bottom: 24px;
 }
 
-.bannerSuccess { background: rgba(29,158,117,.08);  border-color: rgba(29,158,117,.3); }
-.bannerPartial { background: rgba(245,158,11,.06);  border-color: rgba(245,158,11,.25); }
-.bannerError   { background: rgba(226,75,74,.06);   border-color: rgba(226,75,74,.2); }
+.bannerSuccess { background: var(--state-success-bg); border-color: rgba(22, 163, 74, 0.3); border-left-color: var(--success); }
+.bannerPartial { background: var(--state-warning-bg); border-color: rgba(215, 119, 6, 0.3); border-left-color: var(--warning); }
+.bannerError   { background: var(--state-error-bg);   border-color: rgba(220, 38, 38, 0.3); border-left-color: var(--danger); }
 
 .bannerIcon {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  font-size: 22px;
+  font-size: 20px;
 }
 
-.iconSuccess { background: rgba(29,158,117,.15); }
-.iconPartial { background: rgba(245,158,11,.12); }
-.iconError   { background: rgba(226,75,74,.12); }
+.iconSuccess { background: rgba(22, 163, 74, 0.12); }
+.iconPartial { background: rgba(215, 119, 6, 0.12); }
+.iconError   { background: rgba(220, 38, 38, 0.12); }
 
 .bannerTitle {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700;
-  color: var(--white);
+  color: var(--text-primary);
   margin-bottom: 4px;
 }
 
@@ -49,7 +61,7 @@
   font-size: 13px;
   margin-top: 10px;
   padding: 10px 14px;
-  background: rgba(255,255,255,.04);
+  background: var(--state-success-bg);
   border-radius: var(--radius);
   color: var(--text-primary);
   border-left: 3px solid var(--success);
@@ -59,7 +71,7 @@
   font-size: 12px;
   color: var(--text-dim);
   margin-top: 8px;
-  font-family: monospace;
+  font-family: var(--font-mono);
 }
 
 .failList { margin-bottom: 0; }
@@ -67,6 +79,7 @@
 .failListTitle {
   font-size: 14px;
   font-weight: 600;
+  color: var(--text-primary);
   margin-bottom: 16px;
 }
 
@@ -93,8 +106,8 @@
   margin-top: 1px;
 }
 
-.failed  { background: rgba(226,75,74,.15);  color: var(--danger); }
-.blocked { background: rgba(107,125,179,.15);color: var(--blocked); }
+.failed  { background: var(--state-error-bg);     color: var(--danger); }
+.blocked { background: rgba(107,125,179,.12);     color: var(--blocked); }
 
 .stepInfo { flex: 1; }
 .stepLabel { color: var(--text-primary); }
@@ -116,11 +129,11 @@
 
 .dropZone {
   border: 2px dashed var(--navy-border);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius);
   padding: 32px;
   text-align: center;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all var(--transition-base);
 }
 
 .dropZone:hover {

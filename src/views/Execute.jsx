@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { StageSteps, Card, EnvPill, Toggle } from '../components/UI';
+import { StageSteps, Card, Toggle } from '../components/UI';
 import styles from './Execute.module.css';
 
 const STATUS_ICON = {
@@ -70,9 +70,10 @@ export default function Execute({ job, steps, env, sseConnected, onNotifyChange 
     <div>
       <StageSteps current={3} />
       <div className={styles.header}>
-        <EnvPill env={env} />
-        <h1 className={styles.title}>Executing configurations</h1>
-        <p className={styles.subtitle}>SAP Role-Based Permissions are being applied. This may take a few minutes.</p>
+        <h1 className={styles.title}>{env?.label || 'Execution'}</h1>
+        {(job?.original_filename || job?.filename) && (
+          <p className={styles.subtitle}>{job.original_filename || job.filename}</p>
+        )}
       </div>
 
       <Card className={styles.counterCard}>

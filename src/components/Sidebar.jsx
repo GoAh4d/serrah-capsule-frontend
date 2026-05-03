@@ -1,5 +1,7 @@
 import styles from './Sidebar.module.css';
 
+const LOGO = `${import.meta.env.BASE_URL}logo-white.svg`;
+
 const BADGE = {
   completed_success: ['success', 'Done'],
   completed_partial:  ['partial', 'Partial'],
@@ -20,9 +22,18 @@ function formatDate(iso) {
   );
 }
 
-export default function Sidebar({ jobs, currentJobId, onNewUpload, onSelectJob }) {
+function initials(user) {
+  const f = user?.firstName?.[0] || '';
+  const l = user?.lastName?.[0] || '';
+  return (f + l).toUpperCase() || '?';
+}
+
+export default function Sidebar({ jobs, currentJobId, onNewUpload, onSelectJob, user, onSignOut }) {
   return (
     <aside className={styles.sidebar}>
+      <div className={styles.logoBar}>
+        <img src={LOGO} alt="Serrah" className={styles.logoImg} />
+      </div>
       <div className={styles.label}>Jobs</div>
       <button className={styles.newBtn} onClick={onNewUpload}>
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -40,27 +51,41 @@ export default function Sidebar({ jobs, currentJobId, onNewUpload, onSelectJob }
             to get started.
           </div>
         )}
-        {jobs.map(job => {
-          const [badgeCls, badgeLabel] = BADGE[job.status] || ['pending', job.status];
-          return (
-            <div
-              key={job.id}
-              className={`${styles.item} ${job.id === currentJobId ? styles.active : ''}`}
-              onClick={() => onSelectJob(job.id)}
-            >
-              <span
-                className={styles.dot}
-                style={{ background: job.environment?.color || 'var(--accent)' }}
-              />
-              <div className={styles.info}>
-                <div className={styles.env}>{job.environment?.label || '—'}</div>
-                <div className={styles.meta}>{formatDate(job.created_at)}</div>
+        {[...jobs]
+          .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+          .map(job => {
+            const [badgeCls, badgeLabel] = BADGE[job.status] || ['pending', job.status];
+            const filename = job.original_filename || job.filename || job.file_name;
+            return (
+              <div
+                key={job.id}
+                className={`${styles.item} ${job.id === currentJobId ? styles.active : ''}`}
+                onClick={() => onSelectJob(job.id)}
+              >
+                <span
+                  className={styles.dot}
+                  style={{ background: job.environment?.color || 'var(--accent)' }}
+                />
+                <div className={styles.info}>
+                  <div className={styles.env}>{job.environment?.label || '—'}</div>
+                  {filename && <div className={styles.filename}>{filename}</div>}
+                  <div className={styles.meta}>{formatDate(job.created_at)}</div>
+                </div>
+                <span className={`${styles.badge} ${styles[badgeCls]}`}>{badgeLabel}</span>
               </div>
-              <span className={`${styles.badge} ${styles[badgeCls]}`}>{badgeLabel}</span>
-            </div>
-          );
-        })}
+            );
+          })}
       </div>
+
+      {user && (
+        <div className={styles.userSection} onClick={onSignOut} title="Sign out">
+          <div className={styles.userAvatar}>{initials(user)}</div>
+          <div className={styles.userInfo}>
+            <div className={styles.userName}>{user.firstName} {user.lastName}</div>
+            <div className={styles.userRole}>{user.role || 'User'}</div>
+          </div>
+        </div>
+      )}
     </aside>
   );
 }

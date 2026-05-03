@@ -3,6 +3,8 @@ import { register } from '../api/auth';
 import { Card } from '../components/UI';
 import styles from './Register.module.css';
 
+const LOGO = `${import.meta.env.BASE_URL}logo-dark.svg`;
+
 const ROLES = [
   { value: 'consultant', label: 'Consultant' },
   { value: 'admin',      label: 'Admin' },
@@ -62,7 +64,7 @@ export default function Register({ environments, onSuccess, onSignIn }) {
     return (
       <div className={styles.wrap}>
         <div className={styles.card}>
-          <div className={styles.logo}>Serrah</div>
+          <img src={LOGO} alt="Serrah" className={styles.logo} />
           <div className={styles.successIcon}>✓</div>
           <h2 className={styles.successTitle}>Check your inbox</h2>
           <p className={styles.successSub}>
@@ -80,7 +82,7 @@ export default function Register({ environments, onSuccess, onSignIn }) {
   return (
     <div className={styles.wrap}>
       <div className={styles.card}>
-        <div className={styles.logo}>Serrah</div>
+        <img src={LOGO} alt="Serrah" className={styles.logo} />
         <p className={styles.subtitle}>Create your account to access the Capsule Layer.</p>
 
         <div className={styles.section}>

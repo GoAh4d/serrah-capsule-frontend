@@ -43,9 +43,13 @@ export default function Upload({ environments, onJobCreated }) {
 
   return (
     <div>
-      <StageSteps current={1} />
       <div className={styles.header}>
-        <h1 className={styles.title}>Upload Workbook</h1>
+        <h1 className={styles.title}>New Upload</h1>
+      </div>
+      <div className={styles.formWrap}>
+      <StageSteps current={1} />
+      <div className={styles.subheader}>
+        <h2 className={styles.subTitle}>Upload Workbook</h2>
         <p className={styles.subtitle}>Select a target environment and drop your SAP configuration workbook.</p>
       </div>
 
@@ -109,6 +113,7 @@ export default function Upload({ environments, onJobCreated }) {
           </button>
         </div>
       </Card>
+      </div>
     </div>
   );
 }

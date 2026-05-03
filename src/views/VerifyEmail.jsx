@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { verifyEmail } from '../api/auth';
 import styles from './VerifyEmail.module.css';
 
+const LOGO = `${import.meta.env.BASE_URL}logo-dark.svg`;
+
 export default function VerifyEmail({ token, onSuccess, onSignIn }) {
   const [status, setStatus] = useState('loading');
   const [errorMsg, setErrorMsg] = useState('');
@@ -29,7 +31,7 @@ export default function VerifyEmail({ token, onSuccess, onSignIn }) {
   return (
     <div className={styles.wrap}>
       <div className={styles.card}>
-        <div className={styles.logo}>Serrah</div>
+        <img src={LOGO} alt="Serrah" className={styles.logo} />
         {status === 'loading' && (
           <><div className={styles.spinner} /><p className={styles.msg}>Verifying your email…</p></>
         )}

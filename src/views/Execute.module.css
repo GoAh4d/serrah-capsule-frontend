@@ -1,20 +1,30 @@
-.header { margin-bottom: 24px; }
-.title {
-  font-size: 26px;
-  font-weight: 700;
-  letter-spacing: -0.5px;
-  color: var(--white);
-  margin-top: 8px;
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--navy);
+  padding: 16px 24px;
+  margin: 0 -24px 20px;
+  border-bottom: 1px solid var(--navy-border);
 }
-.subtitle { font-size: 14px; color: var(--text-muted); margin-top: 4px; }
+
+.title {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--navy-mid);
+}
+
+.subtitle { font-size: 13px; color: var(--text-muted); margin-top: 3px; }
 
 .counterCard { margin-bottom: 20px; }
 
 .counterMain {
   font-size: 28px;
   font-weight: 700;
-  color: var(--white);
-  letter-spacing: -0.5px;
+  color: var(--navy-mid);
+  letter-spacing: -0.03em;
 }
 
 .counterSub {
@@ -25,8 +35,9 @@
 
 .elapsed {
   font-size: 12px;
-  color: var(--text-muted);
+  color: var(--text-dim);
   margin-top: 6px;
+  font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
 }
 
@@ -41,14 +52,14 @@
 .statVal { font-size: 20px; font-weight: 600; }
 .statLabel {
   font-size: 11px;
-  color: var(--text-muted);
+  color: var(--text-dim);
   text-transform: uppercase;
   letter-spacing: 0.6px;
 }
 
 .cCompleted { color: var(--success); }
 .cAttention { color: var(--warning); }
-.cRunning   { color: var(--accent-light); }
+.cRunning   { color: var(--accent); }
 
 .sseIndicator {
   display: inline-flex;
@@ -66,7 +77,6 @@
   background: var(--success);
   animation: pulse 2s ease-in-out infinite;
 }
-
 
 @keyframes pulse {
   0%, 100% { opacity: 1; }
@@ -88,7 +98,7 @@
 .stepList {
   background: var(--navy-card);
   border: 1px solid var(--navy-border);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius);
   overflow: hidden;
 }
 
@@ -96,17 +106,17 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 20px;
+  padding: 14px 20px;
   cursor: pointer;
-  transition: background 0.15s;
+  transition: background var(--transition-fast);
 }
 
-.stepListHeader:hover { background: rgba(255,255,255,0.02); }
+.stepListHeader:hover { background: var(--navy); }
 .stepListHeader.open  { border-bottom: 1px solid var(--navy-border); }
 
-.stepListTitle { font-size: 14px; font-weight: 600; }
+.stepListTitle { font-size: 14px; font-weight: 600; color: var(--text-primary); }
 
-.chevron { transition: transform 0.2s; }
+.chevron { transition: transform var(--transition-base); color: var(--text-dim); }
 .chevronOpen { transform: rotate(180deg); }
 
 .stepListBody {}
@@ -134,10 +144,10 @@
   margin-top: 1px;
 }
 
-.completed { background: rgba(29,158,117,.15); color: var(--success); }
-.failed    { background: rgba(226,75,74,.15);  color: var(--danger); }
-.blocked   { background: rgba(107,125,179,.15);color: var(--blocked); }
-.running   { background: var(--accent-glow);   color: var(--accent-light); }
+.completed { background: var(--state-success-bg); color: var(--success); }
+.failed    { background: var(--state-error-bg);   color: var(--danger); }
+.blocked   { background: rgba(107,125,179,.12);   color: var(--blocked); }
+.running   { background: var(--accent-glow);      color: var(--accent); }
 
 .stepInfo { flex: 1; min-width: 0; }
 .stepLabel { color: var(--text-primary); }

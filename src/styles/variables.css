@@ -1,24 +1,67 @@
+/* ============================================================
+   Serrah Design System — CSS Tokens v1.0
+   Colors: Soft Cloud page bg, Graphite Blue sidebar,
+           Electric Indigo accents, Near Black text.
+   Shape:  No rounded corners (0). Circles only for dots/avatars.
+   Shadow: None. Flat 2D.
+   ============================================================ */
+
 :root {
-  --navy:        #0D1829;
-  --navy-mid:    #111E33;
-  --navy-card:   #162035;
-  --navy-border: #1E2E4A;
-  --accent:      #5B5FEF;
-  --accent-light:#7B7FF5;
-  --accent-glow: rgba(91, 95, 239, 0.18);
+  /* === Core brand palette === */
+  --color-graphite-blue:  #1E2A44;
+  --color-steel-blue:     #4F6D8C;
+  --color-indigo:         #5B6CFF;
+  --color-indigo-hover:   #4a5ce8;
+  --color-indigo-subtle:  #eef0ff;
+  --color-cyan:           #22C1D6;
+  --color-near-black:     #0F172A;
+  --color-soft-cloud:     #F8FAFC;
+  --color-soft-silver:    #D1D5DB;
+  --color-silver-dark:    #9ca3af;
+  --color-white:          #FFFFFF;
+
+  /* === Semantic state colors === */
+  --color-success:        #16A34A;
+  --color-warning:        #D97706;
+  --color-error:          #DC2626;
+  --color-blocked:        #6B7DB3;
+  --state-success-bg:     #f0fdf4;
+  --state-warning-bg:     #fffbeb;
+  --state-error-bg:       #fef2f2;
+
+  /* === Legacy tokens — mapped to new values for component compatibility === */
+  --navy:        #F8FAFC;   /* page/app background  */
+  --navy-mid:    #1E2A44;   /* sidebar / dark header */
+  --navy-card:   #FFFFFF;   /* card / panel surface  */
+  --navy-border: #D1D5DB;   /* borders               */
+  --accent:      #5B6CFF;   /* Electric Indigo CTA   */
+  --accent-light:#818cf8;   /* lighter indigo (links/hover text) */
+  --accent-glow: rgba(91, 108, 255, 0.12);
   --white:       #FFFFFF;
-  --off-white:   #F0F4FF;
-  --text-primary:#EAF0FF;
-  --text-muted:  #7A8BA8;
-  --text-dim:    #4A5C78;
-  --success:     #1D9E75;
-  --danger:      #E24B4A;
-  --warning:     #F59E0B;
+  --off-white:   #F8FAFC;
+  --text-primary:#0F172A;   /* primary text — Near Black */
+  --text-muted:  #4F6D8C;   /* secondary text — Steel Blue */
+  --text-dim:    #9ca3af;   /* tertiary / disabled   */
+  --success:     #16A34A;
+  --danger:      #DC2626;
+  --warning:     #D97706;
   --blocked:     #6B7DB3;
-  --radius:      10px;
-  --radius-lg:   16px;
+  --radius:      0px;       /* sharp corners everywhere */
+  --radius-lg:   0px;       /* sharp corners everywhere */
+
+  /* === Typography === */
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'Fira Code', monospace;
+
+  /* === Transitions === */
+  --transition-fast: 100ms ease;
+  --transition-base: 200ms ease;
+
+  /* === Focus ring (no box-shadow elsewhere) === */
+  --shadow-focus: 0 0 0 3px rgba(91, 108, 255, 0.25);
 }
 
+/* ── Global reset ─────────────────────────────────────────── */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -26,11 +69,13 @@
 }
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-sans);
   background: var(--navy);
   color: var(--text-primary);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 14px;
 }
 
 #root {
@@ -40,10 +85,14 @@ body {
 }
 
 button {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-sans);
   cursor: pointer;
 }
 
-input, select {
-  font-family: 'Inter', sans-serif;
+input, select, textarea {
+  font-family: var(--font-sans);
 }
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--navy-border); }
