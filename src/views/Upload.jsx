@@ -12,6 +12,8 @@ export default function Upload({ environments, onJobCreated }) {
   const fileInputRef = useRef(null);
 
   const canSubmit = envId && file && !loading;
+  const selectedEnv = environments.find(e => e.id === envId);
+  const isProd = selectedEnv && /prod/i.test(selectedEnv.label);
 
   function handleFile(f) {
     setFile(f);
@@ -68,6 +70,10 @@ export default function Upload({ environments, onJobCreated }) {
             ))}
           </select>
         </div>
+
+        {isProd && (
+          <p className={styles.prodWarning}>Caution: This upload will configure a productive environment.</p>
+        )}
 
         <div className={styles.field}>
           <label className={styles.label}>Workbook File</label>

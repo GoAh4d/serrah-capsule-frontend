@@ -33,6 +33,13 @@
   margin-top: 4px;
 }
 
+.prodWarning {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--accent);
+  margin-bottom: 20px;
+}
+
 .field { margin-bottom: 20px; }
 
 .label {

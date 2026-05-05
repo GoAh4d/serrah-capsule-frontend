@@ -56,15 +56,18 @@ export default function Completion({ job, env, onJobCreated }) {
   const blocked   = steps.filter(s => s.status === 'blocked').length;
   const needsAttention = steps.filter(s => s.status !== 'completed');
 
+  const filename = job?.original_filename || job?.filename;
+
   return (
     <div>
-      <StageSteps current={4} />
       <div className={styles.header}>
-        <h1 className={styles.title}>{env?.label || 'Complete'}</h1>
-        {(job?.original_filename || job?.filename) && (
-          <p className={styles.subtitle}>{job.original_filename || job.filename}</p>
+        <h1 className={styles.title}>{filename || env?.label || 'Complete'}</h1>
+        {filename && env?.label && (
+          <p className={styles.subtitle}>{env.label}</p>
         )}
       </div>
+      <div className={styles.contentWrap}>
+      <StageSteps current={4} />
 
       {/* SUCCESS */}
       {job?.status === 'completed_success' && (
@@ -118,6 +121,7 @@ export default function Completion({ job, env, onJobCreated }) {
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 }

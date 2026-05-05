@@ -2,6 +2,17 @@ import styles from './Sidebar.module.css';
 
 const LOGO = `${import.meta.env.BASE_URL}logo-white.svg`;
 
+const DOT_COLOR = {
+  completed_success: '#16A34A',
+  completed_partial: '#D97706',
+  validation_failed: '#DC2626',
+  failed_system:     '#DC2626',
+  running:           '#5B6CFF',
+  queued:            '#4F6D8C',
+  validating:        '#9ca3af',
+  pending:           '#9ca3af',
+};
+
 const BADGE = {
   completed_success: ['success', 'Done'],
   completed_partial:  ['partial', 'Partial'],
@@ -56,6 +67,8 @@ export default function Sidebar({ jobs, currentJobId, onNewUpload, onSelectJob, 
           .map(job => {
             const [badgeCls, badgeLabel] = BADGE[job.status] || ['pending', job.status];
             const filename = job.original_filename || job.filename || job.file_name;
+            const primaryLabel = filename || job.environment?.label || '—';
+            const showEnvLabel = !!filename && !!job.environment?.label;
             return (
               <div
                 key={job.id}
@@ -64,11 +77,11 @@ export default function Sidebar({ jobs, currentJobId, onNewUpload, onSelectJob, 
               >
                 <span
                   className={styles.dot}
-                  style={{ background: job.environment?.color || 'var(--accent)' }}
+                  style={{ background: DOT_COLOR[job.status] || '#9ca3af' }}
                 />
                 <div className={styles.info}>
-                  <div className={styles.env}>{job.environment?.label || '—'}</div>
-                  {filename && <div className={styles.filename}>{filename}</div>}
+                  <div className={styles.env}>{primaryLabel}</div>
+                  {showEnvLabel && <div className={styles.filename}>{job.environment.label}</div>}
                   <div className={styles.meta}>{formatDate(job.created_at)}</div>
                 </div>
                 <span className={`${styles.badge} ${styles[badgeCls]}`}>{badgeLabel}</span>

@@ -66,15 +66,18 @@ export default function Execute({ job, steps, env, sseConnected, onNotifyChange 
     onNotifyChange(val);
   }
 
+  const filename = job?.original_filename || job?.filename;
+
   return (
     <div>
-      <StageSteps current={3} />
       <div className={styles.header}>
-        <h1 className={styles.title}>{env?.label || 'Execution'}</h1>
-        {(job?.original_filename || job?.filename) && (
-          <p className={styles.subtitle}>{job.original_filename || job.filename}</p>
+        <h1 className={styles.title}>{filename || env?.label || 'Execution'}</h1>
+        {filename && env?.label && (
+          <p className={styles.subtitle}>{env.label}</p>
         )}
       </div>
+      <div className={styles.contentWrap}>
+      <StageSteps current={3} />
 
       <Card className={styles.counterCard}>
         <div className={styles.counterMain}>{completed} of {total} configurations</div>
@@ -134,6 +137,7 @@ export default function Execute({ job, steps, env, sseConnected, onNotifyChange 
             )}
           </div>
         )}
+      </div>
       </div>
     </div>
   );
