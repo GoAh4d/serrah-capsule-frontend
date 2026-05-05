@@ -40,15 +40,18 @@ export default function Validation({ job, env, onJobCreated }) {
   const isFailed  = job?.status === 'validation_failed';
   const errors    = job?.validation_errors || [];
 
+  const filename = job?.original_filename || job?.filename;
+
   return (
     <div>
-      <StageSteps current={2} />
       <div className={styles.header}>
-        <h1 className={styles.title}>{env?.label || 'Validation'}</h1>
-        {(job?.original_filename || job?.filename) && (
-          <p className={styles.subtitle}>{job.original_filename || job.filename}</p>
+        <h1 className={styles.title}>{filename || env?.label || 'Validation'}</h1>
+        {filename && env?.label && (
+          <p className={styles.subtitle}>{env.label}</p>
         )}
       </div>
+      <div className={styles.contentWrap}>
+      <StageSteps current={2} />
 
       {isRunning && (
         <Card>
@@ -83,6 +86,7 @@ export default function Validation({ job, env, onJobCreated }) {
           {env && <ReUpload env={env} onJobCreated={onJobCreated} />}
         </>
       )}
+      </div>
     </div>
   );
 }

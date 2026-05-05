@@ -1,3 +1,5 @@
+.contentWrap { max-width: 66.67%; }
+
 .header {
   position: sticky;
   top: 0;

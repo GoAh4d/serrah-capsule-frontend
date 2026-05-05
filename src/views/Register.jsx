@@ -140,10 +140,7 @@ export default function Register({ environments, onSuccess, onSignIn }) {
                     checked={form.systems.includes(env.id)}
                     onChange={() => toggleSystem(env.id)}
                   />
-                  <span
-                    className={styles.systemDot}
-                    style={{ background: env.color }}
-                  />
+                  <span className={styles.systemDot} />
                   {env.label}
                 </label>
               ))}

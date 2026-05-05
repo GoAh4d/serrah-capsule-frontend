@@ -4,15 +4,8 @@ import styles from './UI.module.css';
 export function EnvPill({ env }) {
   if (!env) return null;
   return (
-    <span
-      className={styles.envPill}
-      style={{
-        color: env.color,
-        background: env.color + '18',
-        borderColor: env.color + '44',
-      }}
-    >
-      <span className={styles.envDot} style={{ background: env.color }} />
+    <span className={styles.envPill}>
+      <span className={styles.envDot} />
       {env.label}
     </span>
   );
