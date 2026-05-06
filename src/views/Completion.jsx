@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useState, useRef } from 'react';
 import { uploadJob } from '../api/capsule';
 import { StageSteps, Card } from '../components/UI';
 import styles from './Completion.module.css';
@@ -15,7 +15,7 @@ function StepFailRow({ step }) {
           <div className={styles.stepError}>↳ {step.error}</div>
         )}
         {step.status === 'blocked' && (
-          <div className={styles.stepBlocked}>Could not run — depends on a step that failed.</div>
+          <div className={styles.stepBlocked}>Couldn't configure this change since it depends on a step that failed</div>
         )}
       </div>
     </div>
@@ -24,25 +24,48 @@ function StepFailRow({ step }) {
 
 function ReUpload({ env, onJobCreated }) {
   const inputRef = useRef(null);
-  async function handleFile(file) {
-    if (!file) return;
-    const { status, data } = await uploadJob(file, env.id);
+  const [dragOver, setDragOver] = useState(false);
+  const [file, setFile] = useState(null);
+
+  async function handleFile(f) {
+    if (!f) return;
+    setFile(f);
+    const { status, data } = await uploadJob(f, env.id);
     if (status === 201) onJobCreated(data.job_id, env);
   }
+
   return (
     <div className={styles.reupload}>
-      <div className={styles.reuploadTitle}>Re-upload corrected workbook</div>
+      <div className={styles.reuploadTitle}>Upload the updated workbook here</div>
       <Card>
-        <div className={styles.dropZone} onClick={() => inputRef.current?.click()}>
+        <div
+          className={`${styles.dropZone} ${dragOver ? styles.dragOver : ''}`}
+          onDragOver={e => { e.preventDefault(); setDragOver(true); }}
+          onDragLeave={() => setDragOver(false)}
+          onDrop={e => {
+            e.preventDefault();
+            setDragOver(false);
+            if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+          }}
+          onClick={() => inputRef.current?.click()}
+        >
           <input
             ref={inputRef}
             type="file"
             accept=".xlsx"
             style={{ display: 'none' }}
-            onChange={e => handleFile(e.target.files[0])}
+            onChange={e => e.target.files[0] && handleFile(e.target.files[0])}
           />
-          <div className={styles.dropText}>Drop corrected .xlsx file here</div>
-          <div className={styles.dropHint}>or click to browse</div>
+          <div className={styles.dropIcon}>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7B7FF5" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+          </div>
+          <div className={styles.dropTitle}>Drop .xlsx file here</div>
+          <div className={styles.dropHint}>or click to browse — max 10 MB</div>
+          {file && <div className={styles.fileName}>{file.name}</div>}
         </div>
       </Card>
     </div>
@@ -62,7 +85,7 @@ export default function Completion({ job, env, onJobCreated }) {
     <div>
       <div className={styles.header}>
         <h1 className={styles.title}>{filename || env?.label || 'Complete'}</h1>
-        {filename && env?.label && (
+        {env?.label && (
           <p className={styles.subtitle}>{env.label}</p>
         )}
       </div>
@@ -74,10 +97,10 @@ export default function Completion({ job, env, onJobCreated }) {
         <div className={`${styles.banner} ${styles.bannerSuccess}`}>
           <div className={`${styles.bannerIcon} ${styles.iconSuccess}`}>✓</div>
           <div>
-            <div className={styles.bannerTitle}>All configurations applied successfully</div>
-            <div className={styles.bannerSub}>{completed} configurations completed.</div>
+            <div className={styles.bannerTitle}>Everything configured successfully</div>
+            <div className={styles.bannerSub}>{completed} configurations completed</div>
             <div className={styles.verifyNote}>
-              Please verify in {env?.label || 'your environment'}. Your changes are now live.
+              Please verify the changes in {env?.label || 'your environment'}. Your configurations are now live.
             </div>
           </div>
         </div>
@@ -89,12 +112,12 @@ export default function Completion({ job, env, onJobCreated }) {
           <div className={`${styles.banner} ${styles.bannerPartial}`}>
             <div className={`${styles.bannerIcon} ${styles.iconPartial}`}>⚠</div>
             <div>
-              <div className={styles.bannerTitle}>Partial completion</div>
+              <div className={styles.bannerTitle}>Some changes couldn't be configured</div>
               <div className={styles.bannerSub}>
-                {completed} completed · {failed + blocked} require attention
+                {completed} configurations completed – {failed + blocked} require attention
               </div>
               <div className={styles.verifyNote}>
-                Please verify the successful changes in {env?.label || 'your environment'}.
+                Please verify the successful changes in {env?.label || 'your environment'}. Your configurations are now live.
               </div>
             </div>
           </div>
@@ -115,7 +138,7 @@ export default function Completion({ job, env, onJobCreated }) {
           <div>
             <div className={styles.bannerTitle}>Something went wrong on our side</div>
             <div className={styles.bannerSub}>
-              The Capsule Layer encountered an unexpected error. Please contact support with the job ID below.
+              There was an unexpected error. Please contact support with the job ID:
             </div>
             <div className={styles.jobId}>Job ID: {job?.id}</div>
           </div>

@@ -8,20 +8,20 @@ const DOT_COLOR = {
   validation_failed: '#DC2626',
   failed_system:     '#DC2626',
   running:           '#5B6CFF',
-  queued:            '#4F6D8C',
-  validating:        '#9ca3af',
-  pending:           '#9ca3af',
+  queued:            '#5B6CFF',
+  validating:        '#5B6CFF',
+  pending:           '#5B6CFF',
 };
 
 const BADGE = {
   completed_success: ['success', 'Done'],
-  completed_partial:  ['partial', 'Partial'],
-  validation_failed:  ['invalid',  'Invalid'],
-  failed_system:      ['invalid',  'Error'],
-  running:            ['running', 'Running'],
-  queued:             ['queued',  'Queued'],
-  validating:         ['pending', 'Validating'],
-  pending:            ['pending', 'Pending'],
+  completed_partial: ['partial', 'Partial'],
+  validation_failed: ['error',   'Error'],
+  failed_system:     ['error',   'Error'],
+  running:           ['running', 'Running'],
+  queued:            ['running', 'Running'],
+  validating:        ['running', 'Running'],
+  pending:           ['running', 'Running'],
 };
 
 function formatDate(iso) {

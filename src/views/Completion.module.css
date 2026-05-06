@@ -132,16 +132,41 @@
 .dropZone {
   border: 2px dashed var(--navy-border);
   border-radius: var(--radius);
-  padding: 32px;
+  padding: 48px;
   text-align: center;
   cursor: pointer;
   transition: all var(--transition-base);
 }
 
-.dropZone:hover {
+.dropZone:hover, .dragOver {
   border-color: var(--accent);
   background: var(--accent-glow);
 }
 
-.dropText { font-size: 14px; font-weight: 500; color: var(--text-primary); }
-.dropHint { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+.dropIcon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 16px;
+  background: var(--accent-glow);
+  border: 1px solid rgba(91, 108, 255, 0.25);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dropTitle {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.dropHint { font-size: 13px; color: var(--text-muted); }
+
+.fileName {
+  font-size: 13px;
+  color: var(--accent);
+  margin-top: 10px;
+  font-weight: 500;
+}

@@ -42,7 +42,7 @@ function StepRow({ step }) {
           <div className={styles.stepError}>↳ {step.error}</div>
         )}
         {step.status === 'blocked' && (
-          <div className={styles.stepBlocked}>Could not run — depends on a step that failed.</div>
+          <div className={styles.stepBlocked}>Couldn't configure this change since it depends on a step that failed</div>
         )}
       </div>
     </div>
@@ -72,7 +72,7 @@ export default function Execute({ job, steps, env, sseConnected, onNotifyChange 
     <div>
       <div className={styles.header}>
         <h1 className={styles.title}>{filename || env?.label || 'Execution'}</h1>
-        {filename && env?.label && (
+        {env?.label && (
           <p className={styles.subtitle}>{env.label}</p>
         )}
       </div>
@@ -80,10 +80,10 @@ export default function Execute({ job, steps, env, sseConnected, onNotifyChange 
       <StageSteps current={3} />
 
       <Card className={styles.counterCard}>
-        <div className={styles.counterMain}>{completed} of {total} configurations</div>
+        <div className={styles.counterMain}>Configuring the system – {completed} of {total} configurations completed</div>
         <div className={styles.counterSub}>
-          {attention} require attention
-          {inProgress ? ` · #${inProgress.index + 1} in progress` : ''}
+          {attention} configurations require attention
+          {inProgress ? ` – #${inProgress.index + 1} in progress` : ''}
         </div>
         {job?.started_at && (
           <div className={styles.elapsed}>Elapsed: {elapsed}</div>
@@ -106,7 +106,7 @@ export default function Execute({ job, steps, env, sseConnected, onNotifyChange 
         </div>
         <div className={styles.sseIndicator}>
           <span className={styles.sseDot} />
-          {sseConnected ? 'Live stream connected' : 'Polling for updates'}
+          {sseConnected ? 'Live stream connected' : 'Checking for updates'}
         </div>
         <div className={styles.notifyRow}>
           <span className={styles.notifyLabel}>Email notification when complete</span>

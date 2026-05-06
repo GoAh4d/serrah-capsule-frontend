@@ -52,7 +52,7 @@ export default function Upload({ environments, onJobCreated }) {
       <StageSteps current={1} />
       <div className={styles.subheader}>
         <h2 className={styles.subTitle}>Upload Workbook</h2>
-        <p className={styles.subtitle}>Select a target environment and drop your SAP configuration workbook.</p>
+        <p className={styles.subtitle}>Select a target environment and upload your configuration workbook below</p>
       </div>
 
       <Card>
