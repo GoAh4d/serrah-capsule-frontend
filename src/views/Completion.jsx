@@ -15,7 +15,7 @@ function StepFailRow({ step }) {
           <div className={styles.stepError}>↳ {step.error}</div>
         )}
         {step.status === 'blocked' && (
-          <div className={styles.stepBlocked}>Could not run — depends on a step that failed.</div>
+          <div className={styles.stepBlocked}>Couldn't configure this change since it depends on a step that failed</div>
         )}
       </div>
     </div>
@@ -36,7 +36,7 @@ function ReUpload({ env, onJobCreated }) {
 
   return (
     <div className={styles.reupload}>
-      <div className={styles.reuploadTitle}>Upload the updated version of the workbook here.</div>
+      <div className={styles.reuploadTitle}>Upload the updated workbook here</div>
       <Card>
         <div
           className={`${styles.dropZone} ${dragOver ? styles.dragOver : ''}`}
@@ -97,10 +97,10 @@ export default function Completion({ job, env, onJobCreated }) {
         <div className={`${styles.banner} ${styles.bannerSuccess}`}>
           <div className={`${styles.bannerIcon} ${styles.iconSuccess}`}>✓</div>
           <div>
-            <div className={styles.bannerTitle}>All configurations applied successfully</div>
-            <div className={styles.bannerSub}>{completed} configurations completed.</div>
+            <div className={styles.bannerTitle}>Everything configured successfully</div>
+            <div className={styles.bannerSub}>{completed} configurations completed</div>
             <div className={styles.verifyNote}>
-              Please verify in {env?.label || 'your environment'}. Your changes are now live.
+              Please verify the changes in {env?.label || 'your environment'}. Your configurations are now live.
             </div>
           </div>
         </div>
@@ -112,12 +112,12 @@ export default function Completion({ job, env, onJobCreated }) {
           <div className={`${styles.banner} ${styles.bannerPartial}`}>
             <div className={`${styles.bannerIcon} ${styles.iconPartial}`}>⚠</div>
             <div>
-              <div className={styles.bannerTitle}>Partial completion</div>
+              <div className={styles.bannerTitle}>Some changes couldn't be configured</div>
               <div className={styles.bannerSub}>
-                {completed} completed · {failed + blocked} require attention
+                {completed} configurations completed – {failed + blocked} require attention
               </div>
               <div className={styles.verifyNote}>
-                Please verify the successful changes in {env?.label || 'your environment'}.
+                Please verify the successful changes in {env?.label || 'your environment'}. Your configurations are now live.
               </div>
             </div>
           </div>
@@ -138,7 +138,7 @@ export default function Completion({ job, env, onJobCreated }) {
           <div>
             <div className={styles.bannerTitle}>Something went wrong on our side</div>
             <div className={styles.bannerSub}>
-              The Capsule Layer encountered an unexpected error. Please contact support with the job ID below.
+              There was an unexpected error. Please contact support with the job ID:
             </div>
             <div className={styles.jobId}>Job ID: {job?.id}</div>
           </div>
