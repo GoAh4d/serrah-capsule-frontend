@@ -72,7 +72,7 @@ export default function Execute({ job, steps, env, sseConnected, onNotifyChange 
     <div>
       <div className={styles.header}>
         <h1 className={styles.title}>{filename || env?.label || 'Execution'}</h1>
-        {filename && env?.label && (
+        {env?.label && (
           <p className={styles.subtitle}>{env.label}</p>
         )}
       </div>

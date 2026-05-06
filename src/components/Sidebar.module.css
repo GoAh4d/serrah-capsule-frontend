@@ -126,10 +126,8 @@
 
 .success { color: #16A34A; }
 .partial { color: #D97706; }
-.invalid { color: #DC2626; }
+.error   { color: #DC2626; }
 .running { color: #5B6CFF; animation: pulse 1.6s ease-in-out infinite; }
-.queued  { color: #4F6D8C; }
-.pending { color: #9ca3af; }
 
 @keyframes pulse {
   0%, 100% { opacity: 1; }

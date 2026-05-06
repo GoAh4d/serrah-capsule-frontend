@@ -1,14 +1,17 @@
-import { useRef } from 'react';
+import { useState, useRef } from 'react';
 import { uploadJob } from '../api/capsule';
 import { StageSteps, Card, Spinner } from '../components/UI';
 import styles from './Validation.module.css';
 
 function ReUpload({ env, onJobCreated }) {
   const inputRef = useRef(null);
+  const [dragOver, setDragOver] = useState(false);
+  const [file, setFile] = useState(null);
 
-  async function handleFile(file) {
-    if (!file) return;
-    const { status, data } = await uploadJob(file, env.id);
+  async function handleFile(f) {
+    if (!f) return;
+    setFile(f);
+    const { status, data } = await uploadJob(f, env.id);
     if (status === 201) onJobCreated(data.job_id, env);
   }
 
@@ -17,7 +20,14 @@ function ReUpload({ env, onJobCreated }) {
       <div className={styles.reuploadTitle}>Upload the updated version of the workbook here.</div>
       <Card>
         <div
-          className={styles.dropZone}
+          className={`${styles.dropZone} ${dragOver ? styles.dragOver : ''}`}
+          onDragOver={e => { e.preventDefault(); setDragOver(true); }}
+          onDragLeave={() => setDragOver(false)}
+          onDrop={e => {
+            e.preventDefault();
+            setDragOver(false);
+            if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+          }}
           onClick={() => inputRef.current?.click()}
         >
           <input
@@ -25,10 +35,18 @@ function ReUpload({ env, onJobCreated }) {
             type="file"
             accept=".xlsx"
             style={{ display: 'none' }}
-            onChange={e => handleFile(e.target.files[0])}
+            onChange={e => e.target.files[0] && handleFile(e.target.files[0])}
           />
-          <div className={styles.dropText}>Drop updated .xlsx file here</div>
-          <div className={styles.dropHint}>or click to browse</div>
+          <div className={styles.dropIcon}>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7B7FF5" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+          </div>
+          <div className={styles.dropTitle}>Drop .xlsx file here</div>
+          <div className={styles.dropHint}>or click to browse — max 10 MB</div>
+          {file && <div className={styles.fileName}>{file.name}</div>}
         </div>
       </Card>
     </div>
@@ -46,7 +64,7 @@ export default function Validation({ job, env, onJobCreated }) {
     <div>
       <div className={styles.header}>
         <h1 className={styles.title}>{filename || env?.label || 'Validation'}</h1>
-        {filename && env?.label && (
+        {env?.label && (
           <p className={styles.subtitle}>{env.label}</p>
         )}
       </div>
