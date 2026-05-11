@@ -3,6 +3,8 @@ import { uploadJob } from '../api/capsule';
 import { StageSteps, Card, Spinner } from '../components/UI';
 import styles from './Validation.module.css';
 
+const WORKBOOK_GUIDE_URL = '';
+
 function ReUpload({ env, onJobCreated }) {
   const inputRef = useRef(null);
   const [dragOver, setDragOver] = useState(false);
@@ -99,10 +101,14 @@ export default function Validation({ job, env, onJobCreated }) {
             <div className={styles.errorList}>
               {errors.map((err, i) => (
                 <div key={i} className={styles.errorRow}>
-                  <div className={styles.errorLocation}>
-                    {err.sheet} — Row {err.row} — {err.field}
+                  <div className={styles.errorLocation}>Row {err.row} · {err.sheet}</div>
+                  <div className={styles.errorMessage}>
+                    {err.message || (
+                      <>There was an issue with this row. Please refer to the{' '}
+                        <a href={WORKBOOK_GUIDE_URL || '#'} target="_blank" rel="noreferrer" className={styles.docLink}>documentation</a>
+                        {' '}for details on how to resolve this.</>
+                    )}
                   </div>
-                  <div className={styles.errorMessage}>{err.message}</div>
                 </div>
               ))}
             </div>

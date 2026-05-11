@@ -3,6 +3,8 @@ import { uploadJob } from '../api/capsule';
 import { StageSteps, Card, FieldError } from '../components/UI';
 import styles from './Upload.module.css';
 
+const WORKBOOK_GUIDE_URL = '';
+
 export default function Upload({ environments, onJobCreated }) {
   const [envId, setEnvId]     = useState('');
   const [file, setFile]       = useState(null);
@@ -52,7 +54,14 @@ export default function Upload({ environments, onJobCreated }) {
       <StageSteps current={1} />
       <div className={styles.subheader}>
         <h2 className={styles.subTitle}>Upload Workbook</h2>
-        <p className={styles.subtitle}>Select a target environment and upload your configuration workbook below</p>
+        <p className={styles.subtitle}>
+          Select a target environment and upload your configuration workbook below
+          <button
+            className={styles.infoBtn}
+            onClick={() => window.open(WORKBOOK_GUIDE_URL || '#', '_blank')}
+            aria-label="Workbook guide"
+          >?</button>
+        </p>
       </div>
 
       <Card>
