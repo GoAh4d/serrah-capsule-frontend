@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { uploadJob } from '../api/capsule';
-import { StageSteps, Card } from '../components/UI';
+import { StageSteps, Card, StatusIcon } from '../components/UI';
 import styles from './Completion.module.css';
 
 function StepFailRow({ step }) {
@@ -90,60 +90,76 @@ export default function Completion({ job, env, onJobCreated }) {
         )}
       </div>
       <div className={styles.contentWrap}>
-      <StageSteps current={4} />
+        <StageSteps current={4} />
 
-      {/* SUCCESS */}
-      {job?.status === 'completed_success' && (
-        <div className={`${styles.banner} ${styles.bannerSuccess}`}>
-          <div className={`${styles.bannerIcon} ${styles.iconSuccess}`}>✓</div>
-          <div>
-            <div className={styles.bannerTitle}>Everything configured successfully</div>
-            <div className={styles.bannerSub}>{completed} configurations completed</div>
-            <div className={styles.verifyNote}>
-              Please verify the changes in {env?.label || 'your environment'}. Your configurations are now live.
+        {/* SUCCESS */}
+        {job?.status === 'completed_success' && (
+          <div className={styles.resultBlock}>
+            <div className={styles.resultHeader}>
+              <StatusIcon status={job.status} size={22} />
+              <div className={styles.resultTitle}>Everything configured successfully</div>
             </div>
+            <div className={styles.resultSub}>{completed} configurations completed</div>
+            <p className={styles.verifyNote}>
+              Please verify the changes in {env?.label || 'your environment'}. Your configurations are now live.
+            </p>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* PARTIAL */}
-      {job?.status === 'completed_partial' && (
-        <>
-          <div className={`${styles.banner} ${styles.bannerPartial}`}>
-            <div className={`${styles.bannerIcon} ${styles.iconPartial}`}>⚠</div>
-            <div>
-              <div className={styles.bannerTitle}>Some changes couldn't be configured</div>
-              <div className={styles.bannerSub}>
+        {/* PARTIAL */}
+        {job?.status === 'completed_partial' && (
+          <>
+            <div className={styles.resultBlock}>
+              <div className={styles.resultHeader}>
+                <StatusIcon status={job.status} size={22} />
+                <div className={styles.resultTitle}>Some changes couldn't be configured</div>
+              </div>
+              <div className={styles.resultSub}>
                 {completed} configurations completed – {failed + blocked} require attention
               </div>
-              <div className={styles.verifyNote}>
+              <p className={styles.verifyNote}>
                 Please verify the successful changes in {env?.label || 'your environment'}. Your configurations are now live.
-              </div>
+              </p>
             </div>
-          </div>
-          <Card className={styles.failList}>
-            <div className={styles.failListTitle}>Configurations requiring attention</div>
-            {needsAttention.map(step => (
-              <StepFailRow key={step.index} step={step} />
-            ))}
-          </Card>
-          {env && <ReUpload env={env} onJobCreated={onJobCreated} />}
-        </>
-      )}
+            <Card className={styles.failList}>
+              <div className={styles.failListTitle}>Configurations requiring attention</div>
+              {needsAttention.map(step => (
+                <StepFailRow key={step.index} step={step} />
+              ))}
+            </Card>
+            {env && <ReUpload env={env} onJobCreated={onJobCreated} />}
+            <p className={styles.configureManually}>Or configure the environment manually.</p>
+          </>
+        )}
 
-      {/* SYSTEM ERROR */}
-      {job?.status === 'failed_system' && (
-        <div className={`${styles.banner} ${styles.bannerError}`}>
-          <div className={`${styles.bannerIcon} ${styles.iconError}`}>✕</div>
-          <div>
-            <div className={styles.bannerTitle}>Something went wrong on our side</div>
-            <div className={styles.bannerSub}>
-              There was an unexpected error. Please contact support with the job ID:
+        {/* SYSTEM ERROR */}
+        {job?.status === 'failed_system' && (
+          <>
+            <div className={styles.resultBlock}>
+              <div className={styles.resultHeader}>
+                <StatusIcon status={job.status} size={22} />
+                <div className={styles.resultTitle}>Something went wrong on our side</div>
+              </div>
+              <div className={styles.resultSub}>
+                There was an unexpected error. Please contact support with the job ID:
+              </div>
+              <div className={styles.jobId}>Job ID: {job?.id}</div>
             </div>
-            <div className={styles.jobId}>Job ID: {job?.id}</div>
-          </div>
+            {env && <ReUpload env={env} onJobCreated={onJobCreated} />}
+            <p className={styles.configureManually}>Or configure the environment manually.</p>
+          </>
+        )}
+
+        <div className={styles.downloadRow}>
+          <button className={styles.downloadBtn}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+            Download Protocol
+          </button>
         </div>
-      )}
       </div>
     </div>
   );

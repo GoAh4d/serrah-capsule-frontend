@@ -3,20 +3,20 @@
   top: 0;
   z-index: 10;
   background: var(--navy);
-  padding: 16px 24px;
-  margin: 0 -24px 20px;
+  padding: 31px 24px;
+  margin: 0 -24px 48px;
   border-bottom: 1px solid var(--navy-border);
 }
 
 .title {
-  font-size: 22px;
+  font-size: 26px;
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1;
   color: var(--navy-mid);
 }
 
-.formWrap { max-width: 66.67%; }
+.formWrap { max-width: 66.67%; margin: 0 auto; }
 
 .subheader { margin-bottom: 24px; }
 
@@ -31,6 +31,48 @@
   font-size: 14px;
   color: var(--text-muted);
   margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.infoBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1px solid var(--text-dim);
+  background: none;
+  color: var(--text-dim);
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
+  transition: border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.infoBtn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.infoBtn:hover::after {
+  content: 'Open workbook guide';
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--navy-mid);
+  color: var(--navy);
+  font-size: 11px;
+  font-weight: 400;
+  white-space: nowrap;
+  padding: 4px 8px;
+  border-radius: var(--radius);
+  pointer-events: none;
 }
 
 .prodWarning {

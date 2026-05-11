@@ -5,13 +5,13 @@
   top: 0;
   z-index: 10;
   background: var(--navy);
-  padding: 16px 24px;
-  margin: 0 -24px 20px;
+  padding: 31px 24px;
+  margin: 0 -24px 48px;
   border-bottom: 1px solid var(--navy-border);
 }
 
 .title {
-  font-size: 22px;
+  font-size: 26px;
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1;

@@ -136,3 +136,13 @@
   color: var(--danger);
   margin-top: 6px;
 }
+
+/* Status Icon */
+.statusIcon {
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: help;
+}
