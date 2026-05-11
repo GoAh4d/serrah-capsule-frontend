@@ -65,12 +65,10 @@ export default function Validation({ job, env, onJobCreated }) {
   return (
     <div>
       <div className={styles.header}>
-        <h1 className={styles.title}>{filename || env?.label || 'Validation'}</h1>
-        {env?.label && (
-          <p className={styles.subtitle}>{env.label}</p>
-        )}
+        <h1 className={styles.title}>{filename?.replace(/\.xlsx$/i, '') || 'Configuration'}</h1>
       </div>
       <div className={styles.contentWrap}>
+      {env?.label && <p className={styles.subtitle}>{env.label}</p>}
       <StageSteps current={2} />
 
       {isRunning && (
@@ -87,17 +85,17 @@ export default function Validation({ job, env, onJobCreated }) {
 
       {isFailed && (
         <>
+          <div className={styles.failedHeader}>
+            {errors.length === 1
+              ? 'The workbook needs an update – 1 issue found'
+              : `The workbook needs an update – ${errors.length} issues found`}
+          </div>
+          <div className={styles.failedSub}>
+            {errors.length === 1
+              ? 'Please fix the issue in the workbook and re-upload it below'
+              : 'Please fix the issues in the workbook and re-upload it below'}
+          </div>
           <Card>
-            <div className={styles.failedHeader}>
-              {errors.length === 1
-                ? 'The workbook needs an update – 1 issue found'
-                : `The workbook needs an update – ${errors.length} issues found`}
-            </div>
-            <div className={styles.failedSub}>
-              {errors.length === 1
-                ? 'Please fix the issue in the workbook and re-upload it below'
-                : 'Please fix the issues in the workbook and re-upload it below'}
-            </div>
             <div className={styles.errorList}>
               {errors.map((err, i) => (
                 <div key={i} className={styles.errorRow}>

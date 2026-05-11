@@ -8,7 +8,10 @@
 }
 
 .logoBar {
-  padding: 24px 19px;
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  padding: 0 19px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 

@@ -71,23 +71,22 @@ export default function Execute({ job, steps, env, sseConnected, onNotifyChange 
   return (
     <div>
       <div className={styles.header}>
-        <h1 className={styles.title}>{filename || env?.label || 'Execution'}</h1>
-        {env?.label && (
-          <p className={styles.subtitle}>{env.label}</p>
-        )}
+        <h1 className={styles.title}>{filename?.replace(/\.xlsx$/i, '') || 'Configuration'}</h1>
       </div>
       <div className={styles.contentWrap}>
+      {env?.label && <p className={styles.subtitle}>{env.label}</p>}
       <StageSteps current={3} />
 
+      <div className={styles.counterMain}>Configuring the system – {completed} of {total} configurations completed</div>
+      <div className={styles.counterSub}>
+        {attention} configurations require attention
+        {inProgress ? ` – #${inProgress.index + 1} in progress` : ''}
+      </div>
+      {job?.started_at && (
+        <div className={styles.elapsed}>Elapsed: {elapsed}</div>
+      )}
+
       <Card className={styles.counterCard}>
-        <div className={styles.counterMain}>Configuring the system – {completed} of {total} configurations completed</div>
-        <div className={styles.counterSub}>
-          {attention} configurations require attention
-          {inProgress ? ` – #${inProgress.index + 1} in progress` : ''}
-        </div>
-        {job?.started_at && (
-          <div className={styles.elapsed}>Elapsed: {elapsed}</div>
-        )}
         <div className={styles.counterRow}>
           <div className={styles.stat}>
             <span className={`${styles.statVal} ${styles.cCompleted}`}>{completed}</span>
