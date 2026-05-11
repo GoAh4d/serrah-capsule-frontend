@@ -3,13 +3,13 @@
   top: 0;
   z-index: 10;
   background: var(--navy);
-  padding: 31px 24px;
+  padding: 28px 24px;
   margin: 0 -24px 48px;
   border-bottom: 1px solid var(--navy-border);
 }
 
 .title {
-  font-size: 26px;
+  font-size: 32px;
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1;
@@ -21,14 +21,14 @@
 .subheader { margin-bottom: 24px; }
 
 .subTitle {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--text-primary);
 }
 
 .subtitle {
-  font-size: 14px;
+  font-size: 16px;
   color: var(--text-muted);
   margin-top: 4px;
   display: flex;
@@ -62,17 +62,18 @@
 .infoBtn:hover::after {
   content: 'Open workbook guide';
   position: absolute;
-  bottom: calc(100% + 6px);
-  left: 50%;
-  transform: translateX(-50%);
+  top: 50%;
+  left: calc(100% + 6px);
+  transform: translateY(-50%);
   background: var(--navy-mid);
   color: var(--navy);
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 400;
   white-space: nowrap;
   padding: 4px 8px;
   border-radius: var(--radius);
   pointer-events: none;
+  z-index: 10;
 }
 
 .prodWarning {
@@ -86,7 +87,7 @@
 
 .label {
   display: block;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
   color: var(--text-primary);
   margin-bottom: 6px;
@@ -99,7 +100,7 @@
   border-bottom: 2px solid var(--navy-mid);
   border-radius: var(--radius);
   padding: 10px 40px 10px 0;
-  font-size: 14px;
+  font-size: 16px;
   color: var(--text-primary);
   outline: none;
   cursor: pointer;
@@ -140,19 +141,19 @@
 }
 
 .dropTitle {
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 600;
   color: var(--text-primary);
   margin-bottom: 6px;
 }
 
 .dropHint {
-  font-size: 13px;
+  font-size: 15px;
   color: var(--text-muted);
 }
 
 .fileName {
-  font-size: 13px;
+  font-size: 15px;
   color: var(--accent);
   margin-top: 10px;
   font-weight: 500;
@@ -169,7 +170,7 @@
   border: none;
   border-radius: var(--radius);
   padding: 11px 28px;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   color: #fff;
   transition: background var(--transition-base), opacity var(--transition-base);

@@ -19,10 +19,8 @@
 }
 
 .label {
-  font-size: 10px;
+  font-size: 16px;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1.2px;
   color: var(--navy);
   padding: 28px 16px 8px;
 }
@@ -32,13 +30,13 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 9px 12px;
+  padding: 11px 12px;
   background: var(--color-steel-blue);
   border: none;
   border-radius: var(--radius);
   color: var(--navy);
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 16px;
+  font-weight: 700;
   transition: color var(--transition-fast), background var(--transition-fast);
 }
 
@@ -63,7 +61,7 @@
   background: none;
   border: none;
   outline: none;
-  font-size: 12px;
+  font-size: 15px;
   color: var(--navy);
   min-width: 0;
 }
@@ -83,7 +81,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 10px 16px 4px;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -105,7 +103,7 @@
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  padding: 10px 16px;
+  padding: 14px 16px;
   cursor: pointer;
   border-left: 2px solid transparent;
   transition: all var(--transition-fast);
@@ -126,7 +124,7 @@
 }
 
 .env {
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
@@ -140,7 +138,7 @@
 }
 
 .filename {
-  font-size: 11px;
+  font-size: 14px;
   color: rgba(248, 250, 252, 0.55);
   margin-top: 2px;
   white-space: nowrap;
@@ -149,14 +147,14 @@
 }
 
 .meta {
-  font-size: 11px;
+  font-size: 13px;
   color: rgba(248, 250, 252, 0.35);
   margin-top: 2px;
 }
 
 .empty {
   padding: 20px 16px;
-  font-size: 12px;
+  font-size: 14px;
   color: rgba(248, 250, 252, 0.4);
   line-height: 1.6;
 }
@@ -166,7 +164,7 @@
   border: none;
   padding: 0;
   color: var(--accent-light);
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 500;
   cursor: pointer;
   text-decoration: underline;
@@ -182,7 +180,7 @@
   background: none;
   border: none;
   color: rgba(248, 250, 252, 0.45);
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 500;
   cursor: pointer;
   padding: 0;

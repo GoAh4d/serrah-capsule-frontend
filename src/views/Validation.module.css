@@ -5,26 +5,26 @@
   top: 0;
   z-index: 10;
   background: var(--navy);
-  padding: 31px 24px;
+  padding: 28px 24px;
   margin: 0 -24px 48px;
   border-bottom: 1px solid var(--navy-border);
 }
 
 .title {
-  font-size: 26px;
+  font-size: 32px;
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1;
   color: var(--navy-mid);
 }
 
-.subtitle { font-size: 13px; color: var(--text-muted); margin-top: 3px; }
+.subtitle { font-size: 15px; color: var(--text-muted); margin-top: 3px; }
 
 .runningRow {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 13px;
+  font-size: 16px;
   color: var(--text-muted);
 }
 
@@ -50,13 +50,13 @@
 }
 
 .failedHeader {
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 600;
   color: var(--danger);
   margin-bottom: 4px;
 }
 
-.failedSub { font-size: 13px; color: var(--text-muted); }
+.failedSub { font-size: 16px; color: var(--text-muted); }
 
 .errorList {
   margin-top: 16px;
@@ -74,7 +74,7 @@
 }
 
 .errorLocation {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--danger);
   text-transform: uppercase;
@@ -82,7 +82,7 @@
   margin-bottom: 4px;
 }
 
-.errorMessage { font-size: 13px; color: var(--text-primary); }
+.errorMessage { font-size: 16px; color: var(--text-primary); line-height: 1.5; }
 
 .docLink { color: var(--accent); text-decoration: underline; }
 
@@ -93,7 +93,7 @@
 }
 
 .reuploadTitle {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   color: var(--text-muted);
   margin-bottom: 12px;
@@ -126,16 +126,16 @@
 }
 
 .dropTitle {
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 600;
   color: var(--text-primary);
   margin-bottom: 6px;
 }
 
-.dropHint { font-size: 13px; color: var(--text-muted); }
+.dropHint { font-size: 15px; color: var(--text-muted); }
 
 .fileName {
-  font-size: 13px;
+  font-size: 15px;
   color: var(--accent);
   margin-top: 10px;
   font-weight: 500;
