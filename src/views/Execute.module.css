@@ -1,12 +1,16 @@
-.contentWrap { max-width: 66.67%; }
+.contentWrap { max-width: 66.67%; margin: 0 auto; }
 
 .header {
+  height: var(--header-h);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   position: sticky;
   top: 0;
   z-index: 10;
   background: var(--navy);
-  padding: 28px 24px;
-  margin: 0 -24px 48px;
+  padding: 0 24px;
+  margin: 0 -24px 16px;
   border-bottom: 1px solid var(--navy-border);
 }
 
@@ -18,21 +22,21 @@
   color: var(--navy-mid);
 }
 
-.subtitle { font-size: 15px; color: var(--text-muted); margin-top: 3px; }
+.subtitle { font-size: 15px; color: var(--text-muted); margin-bottom: 32px; }
 
-.counterCard { margin-bottom: 20px; }
+.counterCard { margin-top: 20px; }
 
 .counterMain {
   font-size: 28px;
   font-weight: 700;
   color: var(--navy-mid);
   letter-spacing: -0.03em;
+  margin-bottom: 4px;
 }
 
 .counterSub {
   font-size: 16px;
   color: var(--text-muted);
-  margin-top: 4px;
   line-height: 1.5;
 }
 

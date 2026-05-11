@@ -84,12 +84,10 @@ export default function Completion({ job, env, onJobCreated }) {
   return (
     <div>
       <div className={styles.header}>
-        <h1 className={styles.title}>{filename || env?.label || 'Complete'}</h1>
-        {env?.label && (
-          <p className={styles.subtitle}>{env.label}</p>
-        )}
+        <h1 className={styles.title}>{filename?.replace(/\.xlsx$/i, '') || 'Configuration'}</h1>
       </div>
       <div className={styles.contentWrap}>
+        {env?.label && <p className={styles.subtitle}>{env.label}</p>}
         <StageSteps current={4} />
 
         {/* SUCCESS */}

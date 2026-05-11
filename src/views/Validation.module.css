@@ -1,12 +1,16 @@
-.contentWrap { max-width: 66.67%; }
+.contentWrap { max-width: 66.67%; margin: 0 auto; }
 
 .header {
+  height: var(--header-h);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   position: sticky;
   top: 0;
   z-index: 10;
   background: var(--navy);
-  padding: 28px 24px;
-  margin: 0 -24px 48px;
+  padding: 0 24px;
+  margin: 0 -24px 16px;
   border-bottom: 1px solid var(--navy-border);
 }
 
@@ -18,7 +22,7 @@
   color: var(--navy-mid);
 }
 
-.subtitle { font-size: 15px; color: var(--text-muted); margin-top: 3px; }
+.subtitle { font-size: 15px; color: var(--text-muted); margin-bottom: 32px; }
 
 .runningRow {
   display: flex;
@@ -54,9 +58,10 @@
   font-weight: 600;
   color: var(--danger);
   margin-bottom: 4px;
+  margin-top: 0;
 }
 
-.failedSub { font-size: 16px; color: var(--text-muted); }
+.failedSub { font-size: 16px; color: var(--text-muted); margin-bottom: 20px; }
 
 .errorList {
   margin-top: 16px;
