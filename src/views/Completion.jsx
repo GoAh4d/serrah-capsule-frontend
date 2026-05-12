@@ -1,11 +1,7 @@
 import { useState, useRef } from 'react';
 import { uploadJob } from '../api/capsule';
-<<<<<<< HEAD
-import { StageSteps, Card, EnvPill } from '../components/UI';
-import ReportDownloadButton from '../components/ReportDownloadButton';
-=======
 import { StageSteps, Card, StatusIcon } from '../components/UI';
->>>>>>> 5a49adf6f54439514a43f650a8d6808fbbde6ec3
+import { generateReport, downloadReport } from '../utils/reportGenerator';
 import styles from './Completion.module.css';
 
 function StepFailRow({ step }) {
@@ -43,13 +39,6 @@ function ReUpload({ env, onJobCreated }) {
     <div className={styles.reupload}>
       <div className={styles.reuploadTitle}>Upload the updated workbook here</div>
       <Card>
-<<<<<<< HEAD
-        <div className={styles.dropZone} onClick={() => inputRef.current?.click()}>
-          <input ref={inputRef} type="file" accept=".xlsx" style={{ display: 'none' }}
-            onChange={e => handleFile(e.target.files[0])} />
-          <div className={styles.dropText}>Drop corrected .xlsx file here</div>
-          <div className={styles.dropHint}>or click to browse</div>
-=======
         <div
           className={`${styles.dropZone} ${dragOver ? styles.dragOver : ''}`}
           onDragOver={e => { e.preventDefault(); setDragOver(true); }}
@@ -78,7 +67,6 @@ function ReUpload({ env, onJobCreated }) {
           <div className={styles.dropTitle}>Drop .xlsx file here</div>
           <div className={styles.dropHint}>or click to browse — max 10 MB</div>
           {file && <div className={styles.fileName}>{file.name}</div>}
->>>>>>> 5a49adf6f54439514a43f650a8d6808fbbde6ec3
         </div>
       </Card>
     </div>
@@ -86,13 +74,29 @@ function ReUpload({ env, onJobCreated }) {
 }
 
 export default function Completion({ job, env, onJobCreated }) {
+  const [reportLoading, setReportLoading] = useState(false);
+  const [reportError, setReportError] = useState('');
+
   const steps = job?.step_summaries || [];
   const completed = steps.filter(s => s.status === 'completed').length;
   const failed    = steps.filter(s => s.status === 'failed').length;
   const blocked   = steps.filter(s => s.status === 'blocked').length;
   const needsAttention = steps.filter(s => s.status !== 'completed');
-
   const filename = job?.original_filename || job?.filename;
+
+  async function handleDownload() {
+    setReportError('');
+    setReportLoading(true);
+    try {
+      const blob = await generateReport({ ...job, environment_label: env?.label, environment_color: env?.color });
+      downloadReport(blob, job?.job_id || job?.id);
+    } catch (e) {
+      console.error('Report generation failed:', e);
+      setReportError('Report generation failed. Please try again.');
+    } finally {
+      setReportLoading(false);
+    }
+  }
 
   return (
     <div>
@@ -103,62 +107,18 @@ export default function Completion({ job, env, onJobCreated }) {
         {env?.label && <p className={styles.subtitle}>{env.label}</p>}
         <StageSteps current={4} />
 
-<<<<<<< HEAD
-      {job?.status === 'completed_success' && (
-        <>
-          <div className={`${styles.banner} ${styles.bannerSuccess}`}>
-            <div className={`${styles.bannerIcon} ${styles.iconSuccess}`}>✓</div>
-            <div>
-              <div className={styles.bannerTitle}>All configurations applied successfully</div>
-              <div className={styles.bannerSub}>{completed || ((job?.roles?.length || 0) + (job?.permissions?.length || 0) + (job?.assignments?.length || 0))} configurations completed.</div>
-              <div className={styles.verifyNote}>Please verify in {env?.label || 'your environment'}. Your changes are now live.</div>
-=======
         {/* SUCCESS */}
         {job?.status === 'completed_success' && (
           <div className={styles.resultBlock}>
             <div className={styles.resultHeader}>
               <StatusIcon status={job.status} size={22} />
               <div className={styles.resultTitle}>Everything configured successfully</div>
->>>>>>> 5a49adf6f54439514a43f650a8d6808fbbde6ec3
             </div>
             <div className={styles.resultSub}>{completed} configurations completed</div>
             <p className={styles.verifyNote}>
               Please verify the changes in {env?.label || 'your environment'}. Your configurations are now live.
             </p>
           </div>
-<<<<<<< HEAD
-          <ReportDownloadButton job={job} />
-        </>
-      )}
-
-      {job?.status === 'completed_partial' && (
-        <>
-          <div className={`${styles.banner} ${styles.bannerPartial}`}>
-            <div className={`${styles.bannerIcon} ${styles.iconPartial}`}>⚠</div>
-            <div>
-              <div className={styles.bannerTitle}>Partial completion</div>
-              <div className={styles.bannerSub}>{completed} completed · {failed + blocked} require attention</div>
-              <div className={styles.verifyNote}>Please verify the successful changes in {env?.label || 'your environment'}.</div>
-            </div>
-          </div>
-          <Card className={styles.failList}>
-            <div className={styles.failListTitle}>Configurations requiring attention</div>
-            {needsAttention.map(step => <StepFailRow key={step.index} step={step} />)}
-          </Card>
-          <ReportDownloadButton job={job} />
-          {env && <ReUpload env={env} onJobCreated={onJobCreated} />}
-        </>
-      )}
-
-      {job?.status === 'failed_system' && (
-        <div className={`${styles.banner} ${styles.bannerError}`}>
-          <div className={`${styles.bannerIcon} ${styles.iconError}`}>✕</div>
-          <div>
-            <div className={styles.bannerTitle}>Something went wrong on our side</div>
-            <div className={styles.bannerSub}>The Capsule Layer encountered an unexpected error. Please contact support with the job ID below.</div>
-            <div className={styles.jobId}>Job ID: {job?.id}</div>
-          </div>
-=======
         )}
 
         {/* PARTIAL */}
@@ -206,15 +166,15 @@ export default function Completion({ job, env, onJobCreated }) {
         )}
 
         <div className={styles.downloadRow}>
-          <button className={styles.downloadBtn}>
+          <button className={styles.downloadBtn} onClick={handleDownload} disabled={reportLoading}>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
               <polyline points="7 10 12 15 17 10"/>
               <line x1="12" y1="3" x2="12" y2="15"/>
             </svg>
-            Download Protocol
+            {reportLoading ? 'Generating…' : 'Download Protocol'}
           </button>
->>>>>>> 5a49adf6f54439514a43f650a8d6808fbbde6ec3
+          {reportError && <p className={styles.reportError}>{reportError}</p>}
         </div>
       </div>
     </div>
