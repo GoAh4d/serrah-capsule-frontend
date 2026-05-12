@@ -135,7 +135,7 @@ export async function generateReport(job) {
           rows: [new TableRow({ children: [cell([
             new Paragraph({ spacing: { before: 120, after: 40 }, children: [new TextRun({ text: 'SERRAH', bold: true, size: 52, color: C.white, font: 'Arial' })] }),
             new Paragraph({ spacing: { before: 0, after: 40 }, children: [new TextRun({ text: 'Execution Protocol Report', size: 24, color: 'CCFCE8', font: 'Arial' })] }),
-            new Paragraph({ spacing: { before: 0, after: 120 }, children: [new TextRun({ text: `${job.environment_label || '—'}  ·  ${job.workbook_type || 'SAP SF RBP'}  ·  ${formatDate(job.executedAt || job.created_at)}`, size: 20, color: 'CCFCE8', font: 'Arial' })] }),
+            new Paragraph({ spacing: { before: 0, after: 120 }, children: [new TextRun({ text: `${job.environment_label || job.environment?.label || '—'}  ·  ${job.workbook_type || 'SAP SF RBP'}  ·  ${formatDate(job.executedAt || job.completed_at || job.created_at)}`, size: 20, color: 'CCFCE8', font: 'Arial' })] }),
           ], { fill: C.headerBg, width: W, noBorder: true })] })]
         }),
 
@@ -158,13 +158,13 @@ export async function generateReport(job) {
           width: { size: W, type: WidthType.DXA },
           columnWidths: [2400, W - 2400],
           rows: [
-            ['Job ID',          job.job_id || '—'],
-            ['Environment',     job.environment_label || '—'],
-            ['Source Workbook', job.fileName || '—'],
+            ['Job ID',          job.job_id || job.id || '—'],
+            ['Environment',     job.environment_label || job.environment?.label || '—'],
+            ['Source Workbook', job.fileName || job.original_filename || job.filename || '—'],
             ['Config Type',     job.workbook_type || 'SAP SF RBP'],
             ['Submitted',       formatDate(job.created_at)],
-            ['Completed',       formatDate(job.executedAt)],
-            ['Duration',        deriveDuration(job.created_at, job.executedAt)],
+            ['Completed',       formatDate(job.executedAt || job.completed_at)],
+            ['Duration',        deriveDuration(job.created_at, job.executedAt || job.completed_at)],
             ['Confidence',      job.confidence != null ? `${Math.round(job.confidence * 100)}%` : '—'],
           ].map(([label, value], i) => new TableRow({ children: [
             cell(p(label, { bold: true, size: 20, color: C.black }), { fill: C.labelBg, width: 2400 }),
@@ -247,8 +247,9 @@ export async function generateReport(job) {
                   const color = stepColor[step.status] || C.black;
                   const fill  = i % 2 === 0 ? C.rowWhite : C.rowAlt;
                   const isHighlight = step.status === 'warning' || step.status === 'failed' || step.status === 'error';
+                  const displayIndex = step.index != null ? step.index + 1 : i + 1;
                   return new TableRow({ children: [
-                    cell(p(String(step.index ?? i + 1), { size: 18, color: C.skipped }), { fill, width: 600 }),
+                    cell(p(String(displayIndex), { size: 18, color: C.skipped }), { fill, width: 600 }),
                     cell(p(step.label || '—', { size: 18, bold: isHighlight }), { fill, width: 4800 }),
                     cell(p(`${icon} ${step.status}`, { size: 18, bold: isHighlight, color }), { fill, width: 1500 }),
                     cell(p(step.error || '—', { size: 18, color: step.error ? C.error : C.skipped }), { fill, width: W - 6900 }),
