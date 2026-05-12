@@ -1,7 +1,7 @@
 import {
   Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell,
   AlignmentType, BorderStyle, WidthType, ShadingType, VerticalAlign,
-  Footer, TabStopType, TabStopPosition, PageNumberElement
+  Footer, TabStopType, TabStopPosition, PageNumber, NumberFormat
 } from 'docx';
 
 // ── DESIGN SYSTEM ─────────────────────────────────
@@ -137,7 +137,7 @@ export async function generateReport(job) {
               new TextRun({ text: `Serrah Execution Report  ·  Job ${(job.job_id || '').slice(0, 8)}…  ·  ${job.environment_label || '—'}`, size: 16, color: C.skipped, font: 'Arial' }),
               new TextRun({ text: '\t', font: 'Arial' }),
               new TextRun({ text: 'Page ', size: 16, color: C.skipped, font: 'Arial' }),
-              new PageNumberElement({ size: 16, color: C.skipped, font: 'Arial' }),
+              new PageNumber({ size: 16, color: C.skipped, font: 'Arial' }),
             ]
           })]
         })
