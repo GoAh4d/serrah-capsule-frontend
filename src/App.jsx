@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback } from 'react';
 import { getMe, signOut, setToken, clearToken, verifyEmail } from './api/auth';
 import { getEnvironments, getJobs } from './api/capsule';
 import { useJob } from './hooks/useJob';
-import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import SignIn from './views/SignIn';
 import Register from './views/Register';
@@ -129,11 +128,34 @@ export default function App() {
   }
 
   if (screen === 'signin') {
+    function devBypass() {
+      setUser({ firstName: 'Dev', lastName: 'Preview', role: 'consultant' });
+      setEnvironments([
+        { id: 'e1', label: 'SAP QA', color: '#5B6CFF' },
+        { id: 'e2', label: 'SAP Prod', color: '#22C1D6' },
+      ]);
+      setScreen('app');
+    }
     return (
-      <SignIn
-        onSuccess={handleSignInSuccess}
-        onRegister={() => setScreen('register')}
-      />
+      <>
+        <SignIn
+          onSuccess={handleSignInSuccess}
+          onRegister={() => setScreen('register')}
+        />
+        {import.meta.env.DEV && (
+          <button
+            onClick={devBypass}
+            style={{
+              position: 'fixed', bottom: 20, right: 20,
+              background: '#1E2A44', color: '#fff', border: 'none',
+              padding: '8px 16px', fontSize: 12, fontWeight: 600,
+              cursor: 'pointer', opacity: 0.7,
+            }}
+          >
+            Dev: skip to app →
+          </button>
+        )}
+      </>
     );
   }
 
@@ -152,13 +174,14 @@ export default function App() {
 
   return (
     <div className={styles.app}>
-      <Header user={user} onSignOut={handleSignOut} onLogoClick={handleNewUpload} />
       <div className={styles.shell}>
         <Sidebar
           jobs={jobs}
           currentJobId={currentJobId}
           onNewUpload={handleNewUpload}
           onSelectJob={handleSelectJob}
+          user={user}
+          onSignOut={handleSignOut}
         />
         <main className={styles.content}>
           {stage === 1 && <Upload environments={environments} onJobCreated={handleJobCreated} />}

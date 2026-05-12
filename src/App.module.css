@@ -1,18 +1,21 @@
 .app {
   display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .shell {
   display: flex;
   flex: 1;
+  height: 100%;
+  overflow: hidden;
 }
 
 .content {
   flex: 1;
-  padding: 36px 48px;
+  padding: 0 24px 24px;
   overflow-y: auto;
+  height: 100%;
 }
 
 .toast {
@@ -21,15 +24,21 @@
   right: 24px;
   background: var(--navy-card);
   border: 1px solid var(--danger);
+  border-left: 3px solid var(--danger);
   border-radius: var(--radius);
   padding: 14px 18px;
   font-size: 13px;
   color: var(--text-primary);
   z-index: 999;
-  animation: slide-in 0.3s ease;
+  animation: slide-in 0.2s ease;
 }
 
 @keyframes slide-in {
   from { transform: translateY(12px); opacity: 0; }
   to   { transform: translateY(0); opacity: 1; }
+}
+
+.toastSuccess {
+  border-color: var(--success);
+  border-left-color: var(--success);
 }

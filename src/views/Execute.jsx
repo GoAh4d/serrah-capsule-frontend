@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { StageSteps, Card, EnvPill, Toggle } from '../components/UI';
+import { StageSteps, Card, Toggle } from '../components/UI';
 import styles from './Execute.module.css';
 
 const STATUS_ICON = {
@@ -8,6 +8,27 @@ const STATUS_ICON = {
   blocked:   { cls: 'blocked',   sym: '○' },
   running:   { cls: 'running',   sym: '…' },
 };
+
+function useElapsed(startIso) {
+  const [elapsed, setElapsed] = useState(0);
+
+  useEffect(() => {
+    if (!startIso) return;
+    const origin = new Date(startIso).getTime();
+    setElapsed(Math.max(0, Math.floor((Date.now() - origin) / 1000)));
+    const id = setInterval(() => {
+      setElapsed(Math.max(0, Math.floor((Date.now() - origin) / 1000)));
+    }, 1000);
+    return () => clearInterval(id);
+  }, [startIso]);
+
+  const h = Math.floor(elapsed / 3600);
+  const m = Math.floor((elapsed % 3600) / 60);
+  const s = elapsed % 60;
+  if (h > 0) return `${h}h ${String(m).padStart(2, '0')}m ${String(s).padStart(2, '0')}s`;
+  if (m > 0) return `${m}m ${String(s).padStart(2, '0')}s`;
+  return `${s}s`;
+}
 
 function StepRow({ step }) {
   const { cls, sym } = STATUS_ICON[step.status] || { cls: '', sym: '·' };
@@ -21,16 +42,18 @@ function StepRow({ step }) {
           <div className={styles.stepError}>↳ {step.error}</div>
         )}
         {step.status === 'blocked' && (
-          <div className={styles.stepBlocked}>Could not run — depends on a step that failed.</div>
+          <div className={styles.stepBlocked}>Couldn't configure this change since it depends on a step that failed</div>
         )}
       </div>
     </div>
   );
 }
 
-export default function Execute({ job, steps, env, sseConnected, sseReconnecting, onNotifyChange }) {
+export default function Execute({ job, steps, env, sseConnected, onNotifyChange }) {
   const [stepsOpen, setStepsOpen] = useState(false);
   const [notifyEmail, setNotifyEmail] = useState(job?.notify_email !== false);
+
+  const elapsed = useElapsed(job?.started_at);
 
   const stepList = Object.values(steps).sort((a, b) => a.index - b.index);
   const total     = stepList.length || '?';
@@ -43,21 +66,27 @@ export default function Execute({ job, steps, env, sseConnected, sseReconnecting
     onNotifyChange(val);
   }
 
+  const filename = job?.original_filename || job?.filename;
+
   return (
     <div>
-      <StageSteps current={3} />
       <div className={styles.header}>
-        <EnvPill env={env} />
-        <h1 className={styles.title}>Executing configurations</h1>
-        <p className={styles.subtitle}>SAP Role-Based Permissions are being applied. This may take a few minutes.</p>
+        <h1 className={styles.title}>{filename?.replace(/\.xlsx$/i, '') || 'Configuration'}</h1>
       </div>
+      <div className={styles.contentWrap}>
+      {env?.label && <p className={styles.subtitle}>{env.label}</p>}
+      <StageSteps current={3} />
+
+      <div className={styles.counterMain}>Configuring the system – {completed} of {total} configurations completed</div>
+      <div className={styles.counterSub}>
+        {attention} configurations require attention
+        {inProgress ? ` – #${inProgress.index + 1} in progress` : ''}
+      </div>
+      {job?.started_at && (
+        <div className={styles.elapsed}>Elapsed: {elapsed}</div>
+      )}
 
       <Card className={styles.counterCard}>
-        <div className={styles.counterMain}>{completed} of {total} configurations</div>
-        <div className={styles.counterSub}>
-          {attention} require attention
-          {inProgress ? ` · #${inProgress.index + 1} in progress` : ''}
-        </div>
         <div className={styles.counterRow}>
           <div className={styles.stat}>
             <span className={`${styles.statVal} ${styles.cCompleted}`}>{completed}</span>
@@ -75,8 +104,8 @@ export default function Execute({ job, steps, env, sseConnected, sseReconnecting
           </div>
         </div>
         <div className={styles.sseIndicator}>
-          <span className={`${styles.sseDot} ${sseReconnecting ? styles.reconnecting : ''}`} />
-          {sseReconnecting ? 'Reconnecting…' : sseConnected ? 'Live stream connected' : 'Polling for updates'}
+          <span className={styles.sseDot} />
+          {sseConnected ? 'Live stream connected' : 'Checking for updates'}
         </div>
         <div className={styles.notifyRow}>
           <span className={styles.notifyLabel}>Email notification when complete</span>
@@ -107,6 +136,7 @@ export default function Execute({ job, steps, env, sseConnected, sseReconnecting
             )}
           </div>
         )}
+      </div>
       </div>
     </div>
   );

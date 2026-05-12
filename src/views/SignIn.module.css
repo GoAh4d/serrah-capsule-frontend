@@ -10,29 +10,19 @@
   width: 380px;
   background: var(--navy-card);
   border: 1px solid var(--navy-border);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius);
   padding: 40px;
 }
 
 .logo {
-  font-size: 26px;
-  font-weight: 700;
-  letter-spacing: -0.5px;
-  color: var(--white);
-}
-
-.logo::after {
-  content: '';
   display: block;
-  width: 32px;
-  height: 2px;
-  background: var(--accent);
-  margin-top: 4px;
-  margin-bottom: 28px;
+  height: 52px;
+  width: auto;
+  margin: 0 auto 28px;
 }
 
 .subtitle {
-  font-size: 13px;
+  font-size: 15px;
   color: var(--text-muted);
   margin-bottom: 28px;
   line-height: 1.6;
@@ -40,31 +30,30 @@
 
 .label {
   display: block;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
-  color: var(--text-muted);
-  margin-bottom: 7px;
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
+  color: var(--text-primary);
+  margin-bottom: 6px;
 }
 
 .input {
   width: 100%;
-  background: var(--navy);
-  border: 1px solid var(--navy-border);
+  background: var(--navy-card);
+  border: none;
+  border-bottom: 2px solid var(--navy-mid);
   border-radius: var(--radius);
-  padding: 11px 14px;
-  font-size: 14px;
+  padding: 10px 0;
+  font-size: 16px;
   color: var(--text-primary);
   outline: none;
-  transition: border-color 0.2s;
+  transition: border-color var(--transition-base);
 }
 
-.input:focus { border-color: var(--accent); }
-.inputError  { border-color: var(--danger) !important; }
+.input:focus { border-bottom-color: var(--accent); }
+.inputError  { border-bottom-color: var(--danger) !important; }
 
 .error {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--danger);
   margin-top: 6px;
 }
@@ -75,29 +64,36 @@
   border: none;
   border-radius: var(--radius);
   padding: 12px;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
-  color: var(--white);
+  color: #fff;
   margin-top: 20px;
-  transition: background 0.2s, opacity 0.2s;
+  transition: background var(--transition-base), opacity var(--transition-base);
 }
 
-.btn:hover:not(:disabled) { background: var(--accent-light); }
+.btn:hover:not(:disabled) { background: var(--color-indigo-hover); }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .registerRow {
   text-align: center;
   margin-top: 20px;
-  font-size: 13px;
+  font-size: 15px;
   color: var(--text-muted);
 }
 
 .registerLink {
   background: none;
   border: none;
-  color: var(--accent-light);
-  font-size: 13px;
+  color: var(--accent);
+  font-size: 15px;
   cursor: pointer;
   text-decoration: underline;
   padding: 0;
+}
+
+.hint {
+  font-size: 15px;
+  color: var(--text-primary);
+  line-height: 1.6;
+  margin-top: 16px;
 }

@@ -26,13 +26,13 @@ function currentStage(status) {
 export default function MainApp() {
   const { auth, signOut, markSignedIn } = useAuth();
   const { list: environments } = useEnvironments();
-  const { toast } = useToast();
+  const { toast, showSuccess } = useToast();
 
   const [jobs, setJobs] = useState([]);
   const [currentJobId, setCurrentJobId] = useState(null);
   const [currentEnv, setCurrentEnv] = useState(null);
 
-  const { job, steps, sseConnected, sseReconnecting, updateNotify } = useJob(currentJobId);
+  const { job, steps, sseConnected, updateNotify } = useJob(currentJobId);
 
   // ── LOAD JOB LIST ─────────────────────────────
   const loadJobs = useCallback(async () => {
@@ -80,8 +80,20 @@ export default function MainApp() {
 
   // ── NEW UPLOAD ────────────────────────────────
   function handleNewUpload() {
+    if (job?.status === 'running' || job?.status === 'queued') {
+      const confirmed = window.confirm(
+        'A job is currently running. Start a new upload anyway?'
+      );
+      if (!confirmed) return;
+    }
     setCurrentJobId(null);
     setCurrentEnv(null);
+  }
+
+  // ── NOTIFY TOGGLE ─────────────────────────────
+  async function handleUpdateNotify(value) {
+    await updateNotify(value);
+    showSuccess('Notification preference saved.');
   }
 
   if (auth.loading) return null;
@@ -123,8 +135,7 @@ export default function MainApp() {
               steps={steps}
               env={envForView}
               sseConnected={sseConnected}
-              sseReconnecting={sseReconnecting}
-              onNotifyChange={updateNotify}
+              onNotifyChange={handleUpdateNotify}
             />
           )}
           {stage === 4 && (
@@ -136,7 +147,11 @@ export default function MainApp() {
           )}
         </main>
       </div>
-      {toast && <div className={styles.toast}>{toast.message}</div>}
+      {toast && (
+        <div className={`${styles.toast} ${toast.type === 'success' ? styles.toastSuccess : ''}`}>
+          {toast.message}
+        </div>
+      )}
     </div>
   );
 }

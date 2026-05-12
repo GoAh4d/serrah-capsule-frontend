@@ -1,23 +1,35 @@
-import { useRef } from 'react';
+import { useState, useRef } from 'react';
 import { uploadJob } from '../api/capsule';
-import { StageSteps, Card, EnvPill, Spinner } from '../components/UI';
+import { StageSteps, Card, Spinner } from '../components/UI';
 import styles from './Validation.module.css';
+
+const WORKBOOK_GUIDE_URL = '';
 
 function ReUpload({ env, onJobCreated }) {
   const inputRef = useRef(null);
+  const [dragOver, setDragOver] = useState(false);
+  const [file, setFile] = useState(null);
 
-  async function handleFile(file) {
-    if (!file) return;
-    const { status, data } = await uploadJob(file, env.id);
+  async function handleFile(f) {
+    if (!f) return;
+    setFile(f);
+    const { status, data } = await uploadJob(f, env.id);
     if (status === 201) onJobCreated(data.job_id, env);
   }
 
   return (
     <div className={styles.reupload}>
-      <div className={styles.reuploadTitle}>Re-upload corrected workbook</div>
+      <div className={styles.reuploadTitle}>Upload the updated workbook here</div>
       <Card>
         <div
-          className={styles.dropZone}
+          className={`${styles.dropZone} ${dragOver ? styles.dragOver : ''}`}
+          onDragOver={e => { e.preventDefault(); setDragOver(true); }}
+          onDragLeave={() => setDragOver(false)}
+          onDrop={e => {
+            e.preventDefault();
+            setDragOver(false);
+            if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+          }}
           onClick={() => inputRef.current?.click()}
         >
           <input
@@ -25,10 +37,18 @@ function ReUpload({ env, onJobCreated }) {
             type="file"
             accept=".xlsx"
             style={{ display: 'none' }}
-            onChange={e => handleFile(e.target.files[0])}
+            onChange={e => e.target.files[0] && handleFile(e.target.files[0])}
           />
-          <div className={styles.dropText}>Drop corrected .xlsx file here</div>
-          <div className={styles.dropHint}>or click to browse</div>
+          <div className={styles.dropIcon}>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7B7FF5" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+          </div>
+          <div className={styles.dropTitle}>Drop .xlsx file here</div>
+          <div className={styles.dropHint}>or click to browse — max 10 MB</div>
+          {file && <div className={styles.fileName}>{file.name}</div>}
         </div>
       </Card>
     </div>
@@ -40,28 +60,22 @@ export default function Validation({ job, env, onJobCreated }) {
   const isFailed  = job?.status === 'validation_failed';
   const errors    = job?.validation_errors || [];
 
+  const filename = job?.original_filename || job?.filename;
+
   return (
     <div>
-      <StageSteps current={2} />
       <div className={styles.header}>
-        <EnvPill env={env} />
-        <h1 className={styles.title}>
-          {isRunning ? 'Validating workbook…' : isFailed ? 'Validation failed' : 'Validation'}
-        </h1>
-        <p className={styles.subtitle}>
-          {isRunning
-            ? 'Checking structure and field values.'
-            : isFailed
-            ? 'Fix the issues below and re-upload your workbook.'
-            : ''}
-        </p>
+        <h1 className={styles.title}>{filename?.replace(/\.xlsx$/i, '') || 'Configuration'}</h1>
       </div>
+      <div className={styles.contentWrap}>
+      {env?.label && <p className={styles.subtitle}>{env.label}</p>}
+      <StageSteps current={2} />
 
       {isRunning && (
         <Card>
           <div className={styles.runningRow}>
             <Spinner />
-            Structural validation in progress — this usually takes a few seconds.
+            Checking the workbook setup – this usually takes a few seconds
           </div>
           <div className={styles.progressBar}>
             <div className={styles.progressFill} />
@@ -71,18 +85,28 @@ export default function Validation({ job, env, onJobCreated }) {
 
       {isFailed && (
         <>
+          <div className={styles.failedHeader}>
+            {errors.length === 1
+              ? 'The workbook needs an update – 1 issue found'
+              : `The workbook needs an update – ${errors.length} issues found`}
+          </div>
+          <div className={styles.failedSub}>
+            {errors.length === 1
+              ? 'Please fix the issue in the workbook and re-upload it below'
+              : 'Please fix the issues in the workbook and re-upload it below'}
+          </div>
           <Card>
-            <div className={styles.failedHeader}>
-              ✗ Validation failed — {errors.length} issue(s) found
-            </div>
-            <div className={styles.failedSub}>Fix the errors in your workbook and re-upload below.</div>
             <div className={styles.errorList}>
               {errors.map((err, i) => (
                 <div key={i} className={styles.errorRow}>
-                  <div className={styles.errorLocation}>
-                    {err.sheet} — Row {err.row} — {err.field}
+                  <div className={styles.errorLocation}>Row {err.row} · {err.sheet}</div>
+                  <div className={styles.errorMessage}>
+                    {err.message || (
+                      <>There was an issue with this row. Please refer to the{' '}
+                        <a href={WORKBOOK_GUIDE_URL || '#'} target="_blank" rel="noreferrer" className={styles.docLink}>documentation</a>
+                        {' '}for details on how to resolve this.</>
+                    )}
                   </div>
-                  <div className={styles.errorMessage}>{err.message}</div>
                 </div>
               ))}
             </div>
@@ -90,6 +114,7 @@ export default function Validation({ job, env, onJobCreated }) {
           {env && <ReUpload env={env} onJobCreated={onJobCreated} />}
         </>
       )}
+      </div>
     </div>
   );
 }
