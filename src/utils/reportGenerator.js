@@ -1,7 +1,6 @@
 import {
   Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell,
   AlignmentType, BorderStyle, WidthType, ShadingType, VerticalAlign,
-  Footer, TabStopType, TabStopPosition, PageNumber, NumberFormat
 } from 'docx';
 
 // ── DESIGN SYSTEM ─────────────────────────────────
@@ -126,21 +125,6 @@ export async function generateReport(job) {
           size: { width: 12240, height: 15840 },
           margin: { top: 1080, right: 1080, bottom: 1080, left: 1080 },
         }
-      },
-      footers: {
-        default: new Footer({
-          children: [new Paragraph({
-            tabStops: [{ type: TabStopType.RIGHT, position: W }],
-            spacing: { before: 0, after: 0 },
-            border: { top: { style: BorderStyle.SINGLE, size: 2, color: C.border, space: 4 } },
-            children: [
-              new TextRun({ text: `Serrah Execution Report  ·  Job ${(job.job_id || '').slice(0, 8)}…  ·  ${job.environment_label || '—'}`, size: 16, color: C.skipped, font: 'Arial' }),
-              new TextRun({ text: '\t', font: 'Arial' }),
-              new TextRun({ text: 'Page ', size: 16, color: C.skipped, font: 'Arial' }),
-              new PageNumber({ size: 16, color: C.skipped, font: 'Arial' }),
-            ]
-          })]
-        })
       },
       children: [
 
