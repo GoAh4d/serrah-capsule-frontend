@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { uploadJob } from '../api/capsule';
 import { StageSteps, Card, StatusIcon } from '../components/UI';
+import { generateReport, downloadReport } from '../utils/reportGenerator';
 import styles from './Completion.module.css';
 
 function StepFailRow({ step }) {
@@ -73,13 +74,29 @@ function ReUpload({ env, onJobCreated }) {
 }
 
 export default function Completion({ job, env, onJobCreated }) {
-  const steps    = job?.step_summaries || [];
+  const [reportLoading, setReportLoading] = useState(false);
+  const [reportError, setReportError] = useState('');
+
+  const steps = job?.step_summaries || [];
   const completed = steps.filter(s => s.status === 'completed').length;
   const failed    = steps.filter(s => s.status === 'failed').length;
   const blocked   = steps.filter(s => s.status === 'blocked').length;
   const needsAttention = steps.filter(s => s.status !== 'completed');
-
   const filename = job?.original_filename || job?.filename;
+
+  async function handleDownload() {
+    setReportError('');
+    setReportLoading(true);
+    try {
+      const blob = await generateReport({ ...job, environment_label: env?.label, environment_color: env?.color });
+      downloadReport(blob, job?.job_id || job?.id);
+    } catch (e) {
+      console.error('Report generation failed:', e);
+      setReportError('Report generation failed. Please try again.');
+    } finally {
+      setReportLoading(false);
+    }
+  }
 
   return (
     <div>
@@ -149,14 +166,15 @@ export default function Completion({ job, env, onJobCreated }) {
         )}
 
         <div className={styles.downloadRow}>
-          <button className={styles.downloadBtn}>
+          <button className={styles.downloadBtn} onClick={handleDownload} disabled={reportLoading}>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
               <polyline points="7 10 12 15 17 10"/>
               <line x1="12" y1="3" x2="12" y2="15"/>
             </svg>
-            Download Protocol
+            {reportLoading ? 'Generating…' : 'Download Protocol'}
           </button>
+          {reportError && <p className={styles.reportError}>{reportError}</p>}
         </div>
       </div>
     </div>
